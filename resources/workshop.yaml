@@ -3,9 +3,10 @@ kind: Workshop
 metadata:
   name: bootiful-kubernetes-operators
 spec:
-  title: Markdown Sample
-  description: A sample workshop using Markdown
+  title: Bootiful Kubernetes Operators
+  description: TODO
   workshop:
+    container: ghcr.io/vmware-tanzu-labs/educates-base-environment:2.5.2
     files:
     - git:
         url: https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop
