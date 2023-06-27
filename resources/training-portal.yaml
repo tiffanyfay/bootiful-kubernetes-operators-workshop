@@ -1,0 +1,10 @@
+apiVersion: training.educates.dev/v1beta1
+kind: TrainingPortal
+metadata:
+  name: bootiful-kubernetes-operators
+spec:
+  portal:
+    sessions:
+      maximum: 8
+  workshops:
+  - name: bootiful-kubernetes-operators

@@ -1,0 +1,17 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: bootiful-kubernetes-operators
+spec:
+  title: Markdown Sample
+  description: A sample workshop using Markdown
+  workshop:
+    image: ghcr.io/vmware-tanzu-labs/lab-markdown-sample:main
+  session:
+    namespaces:
+      budget: small
+    applications:
+      console:
+        enabled: true
+      editor:
+        enabled: true
