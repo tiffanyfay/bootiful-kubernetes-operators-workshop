@@ -1,0 +1,6 @@
+name: Markdown Sample
+
+modules:
+    activate:
+    - workshop-overview
+    - workshop-summary
