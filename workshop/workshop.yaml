@@ -3,4 +3,5 @@ name: Markdown Sample
 modules:
     activate:
     - workshop-overview
+    - exercises/spring-initializr
     - workshop-summary
