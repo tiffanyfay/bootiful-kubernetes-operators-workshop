@@ -13,6 +13,7 @@ spec:
         ref: origin/main
       includePaths:
       - /workshop/**
+      - /samples/**
   session:
     namespaces:
       budget: small
