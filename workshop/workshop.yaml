@@ -4,4 +4,5 @@ modules:
     activate:
     - workshop-overview
     - exercises/spring-initializr
+    - exercises/create-foo-crd
     - workshop-summary

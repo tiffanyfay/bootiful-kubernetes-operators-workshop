@@ -4,6 +4,9 @@ modules:
         exit_sign: Spring Initializr
     exercises/spring-initializr:
         name: Spring Initializr
+        exit_sign: Create CRD
+    exercises/create-foo-crd:
+        name: Create CRD
         exit_sign: Summary
     workshop-summary:
         name: Workshop Summary
