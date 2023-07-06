@@ -6,4 +6,8 @@ modules:
     - exercises/spring-initializr
     - exercises/create-foo-crd
     - exercises/controller
+    - exercises/informer
+    - exercises/reconciler
+    - exercises/run-app
+    - exercises/graalvm
     - workshop-summary

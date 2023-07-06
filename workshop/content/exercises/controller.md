@@ -27,3 +27,5 @@ text: |
 
     }
 ```
+
+Things are broken! We don't have any of the three dependencies expressed here: `SharedInformerFactory`, `Reconciler`, and `SharedIndexInformer<V1Foo>`.
