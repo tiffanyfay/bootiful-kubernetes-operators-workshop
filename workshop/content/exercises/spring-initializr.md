@@ -13,11 +13,11 @@ The Spring Initializr will get us most of the way (it does a lot of code generat
 
 ```editor:open-file
 file: samples/build.gradle
-line: 1
 ```
 
 ```editor:insert-lines-before-line
 file: samples/build.gradle
 line: 27
-text: "    implementation 'io.kubernetes:client-java-spring-aot-integration:17.0.0'"
+text: |1
+     implementation 'io.kubernetes:client-java-spring-aot-integration:17.0.0'
 ```
