@@ -33,10 +33,11 @@ TODO: explain what is happening in the file
 
 We'll need a little script to help us code-generate the Java code for our CRD.
 
-```terminal:execute
-command: |
-    ./bin/regen_crds.sh
+```shell
+./samples/bin/regen_crds.sh
 ```
+
+We already ran it and the files are in `samples/src/main/java/io/spring/models`.
 
 #### And then a Miracle Happens 
 
