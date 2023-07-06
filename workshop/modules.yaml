@@ -7,6 +7,9 @@ modules:
         exit_sign: Create CRD
     exercises/create-foo-crd:
         name: Create CRD
+        exit_sign: Controller
+    exercises/controller:
+        name: Controller
         exit_sign: Summary
     workshop-summary:
         name: Workshop Summary

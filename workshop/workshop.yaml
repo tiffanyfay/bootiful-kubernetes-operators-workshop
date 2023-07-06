@@ -5,4 +5,5 @@ modules:
     - workshop-overview
     - exercises/spring-initializr
     - exercises/create-foo-crd
+    - exercises/controller
     - workshop-summary
