@@ -19,6 +19,5 @@ line: 1
 ```editor:insert-lines-before-line
 file: samples/build.gradle
 line: 27
-text: |
-    implementation 'io.kubernetes:client-java-spring-aot-integration:17.0.0'
+text: "    implementation 'io.kubernetes:client-java-spring-aot-integration:17.0.0'"
 ```
