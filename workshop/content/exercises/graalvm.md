@@ -1,7 +1,8 @@
 > TODO text here and check where this file saves
 
 ```terminal:execute
-./gradlew nativeCompile
+command: |
+    ./gradlew nativeCompile
 ```
 
 > [name=tiffany jernigan 🐙]
@@ -17,7 +18,8 @@ command: |
 
 Re-apply:
 ```terminal:execute
-kubectl apply -f 
+command: |
+    kubectl apply -f 
 ```
 
 Run the binary listed in the run output. For instance this could be `./build/native/nativeCompile/controllers`.

@@ -6,7 +6,7 @@ So, logically, a [Kubernetes operator](https://kubernetes.io/docs/concepts/exten
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
 line: 12
-text: |
+text: |1
 
     @Bean(destroyMethod = "shutdown")
     Controller controller(SharedInformerFactory sharedInformerFactory,
@@ -28,4 +28,4 @@ text: |
     }
 ```
 
-Things are broken! We don't have any of the three dependencies expressed here: `SharedInformerFactory`, `Reconciler`, and `SharedIndexInformer<V1Foo>`.
+Things are broken! We don't have any of the three dependencies expressed here: `SharedInformerFactory`, `SharedIndexInformer<V1Foo>`, and `Reconciler`.

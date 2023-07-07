@@ -20,11 +20,10 @@ command: |
 ```
 And see the newly minted CRD.
 
-Let's take a look at `bin/foo.yaml`
+Let's take a look at `samples/bin/foo.yaml`
 
 ```editor:open-file
 file: samples/bin/foo.yaml
-line: 1
 ```
 
 TODO: explain what is happening in the file
@@ -34,7 +33,7 @@ TODO: explain what is happening in the file
 We'll need a little script to help us code-generate the Java code for our CRD.
 
 ```shell
-./samples/bin/regen_crds.sh
+    ./samples/bin/regen_crds.sh
 ```
 
 We already ran it and the files are in `samples/src/main/java/io/spring/models`.

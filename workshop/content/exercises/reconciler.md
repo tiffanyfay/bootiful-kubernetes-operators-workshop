@@ -2,7 +2,11 @@ Next, we'll need to define the `Reconciler` itself which is biggest chunk.
 
 We'll need a new thing, called `AppsV1Api`. This API sidesteps all the caching and indexing and allows us to talk directly to the API server. You could achieve this without using the API, but it simplifies things sometimes and it's instructional to see it in action, so:
 
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 12
+text: |1
+
 	@Bean
 	AppsV1Api appsV1Api(ApiClient apiClient) {
 		return new AppsV1Api(apiClient);
@@ -10,7 +14,11 @@ We'll need a new thing, called `AppsV1Api`. This API sidesteps all the caching a
 ```
 
 And then one as well for `CoreV1Api` for a`ConfigMap`:
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 12
+text: |1
+
 	@Bean
 	CoreV1Api coreV1Api(ApiClient apiClient) {
 		return new CoreV1Api(apiClient);
@@ -19,7 +27,11 @@ And then one as well for `CoreV1Api` for a`ConfigMap`:
 
 Now we can create the reconciler:
 
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 52
+text: |1
+
 	/**
 	 * the Reconciler won't get an event telling it that the cluster has changed, but
 	 * instead it looks at cluster state and determines that something has changed
@@ -88,7 +100,11 @@ Now we can create the reconciler:
 
 Here's where the rubber meets the road: our reconciler will create a new `Deployment` and `ConfigMap` every time a new `Foo` is created. We like you too much to programmatically build up the `Deployment` from scratch in Java, so we'll just reuse a pre-written YAML definition (`/deployment.yaml`) of a `Deployment` and then reify it, changing some of its parameters, and submit that.
 
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 117
+text: |1
+
 	static class FooControllerRuntimeHints implements RuntimeHintsRegistrar {
 
 		@Override
@@ -100,6 +116,10 @@ Here's where the rubber meets the road: our reconciler will create a new `Deploy
 
 	}
 ```
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 128
+text: |1
 
 ```java
 	@SneakyThrows
@@ -111,7 +131,11 @@ Here's where the rubber meets the road: our reconciler will create a new `Deploy
 
 We need to define `createOrUpdate`. It is as the name tells -- if the resource doesn't exist, create it, else update it.
 
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 134
+text: |1
+
 	static private <T> void createOrUpdate(Class<T> clazz, ApiSupplier<T> creator, ApiSupplier<T> updater) {
 		try {
 			creator.get();
@@ -144,7 +168,11 @@ We need to define `createOrUpdate`. It is as the name tells -- if the resource d
 ```
 
 We also need to update the Deployment annotation:
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 157
+text: |1
+
 	private void updateAnnotation(V1Deployment deployment) {
 		Objects.requireNonNull(Objects.requireNonNull(deployment.getSpec()).getTemplate().getMetadata())
 				.setAnnotations(Map.of("bootiful-update", Instant.now().toString()));
@@ -152,7 +180,11 @@ We also need to update the Deployment annotation:
 ```
 
 And add the owner reference:
-```java
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 162
+text: |1
+
 	private static V1ObjectMeta addOwnerReference(String requestName, V1Foo foo, KubernetesObject kubernetesObject) {
 		Assert.notNull(foo, () -> "the V1Foo must not be null");
 		return kubernetesObject.getMetadata().addOwnerReferencesItem(new V1OwnerReference().kind(foo.getKind())
