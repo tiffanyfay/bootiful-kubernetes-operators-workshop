@@ -19,7 +19,7 @@ command: |
 Re-apply:
 ```terminal:execute
 command: |
-    kubectl apply -f 
+    kubectl apply -f bin/test.yaml
 ```
 
 Run the binary listed in the run output. For instance this could be `./build/native/nativeCompile/controllers`.

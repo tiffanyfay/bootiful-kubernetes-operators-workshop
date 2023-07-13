@@ -14,7 +14,9 @@ command: kubectl get foo -o yaml
 ## Run the Program
 
 ```terminal:execute
-command: ./samples/gradlew bootRun
+command: |
+    cd samples
+    ./gradlew bootRun
 ```
 
 You can see the created resources:
