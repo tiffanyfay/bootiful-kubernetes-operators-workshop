@@ -6,14 +6,15 @@ command: kubectl apply -f samples/bin/test.yaml
 ```
 
 Now you can run the following:
+
 ```terminal:execute
-kubectl get foo -o yaml
+command: kubectl get foo -o yaml
 ```
 
 ## Run the Program
 
 ```terminal:execute
-./gradlew bootRun
+command: ./samples/gradlew bootRun
 ```
 
 You can see the created resources:

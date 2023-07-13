@@ -113,15 +113,14 @@ text: |1
 				hints.resources().registerResource(new ClassPathResource(path));
 			}
 		}
-
 	}
 ```
+
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
-line: 128
+line: 127
 text: |1
 
-```java
 	@SneakyThrows
 	private static <T> T loadYamlAs(Resource resource, Class<T> clzz) {
 		var yaml = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
@@ -133,7 +132,7 @@ We need to define `createOrUpdate`. It is as the name tells -- if the resource d
 
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
-line: 134
+line: 133
 text: |1
 
 	static private <T> void createOrUpdate(Class<T> clazz, ApiSupplier<T> creator, ApiSupplier<T> updater) {
@@ -168,9 +167,10 @@ text: |1
 ```
 
 We also need to update the Deployment annotation:
+
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
-line: 157
+line: 156
 text: |1
 
 	private void updateAnnotation(V1Deployment deployment) {
@@ -180,9 +180,10 @@ text: |1
 ```
 
 And add the owner reference:
+
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
-line: 162
+line: 161
 text: |1
 
 	private static V1ObjectMeta addOwnerReference(String requestName, V1Foo foo, KubernetesObject kubernetesObject) {

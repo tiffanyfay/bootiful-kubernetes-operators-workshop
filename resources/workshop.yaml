@@ -22,3 +22,6 @@ spec:
         enabled: true
       editor:
         enabled: true
+      terminal:
+        enabled: true
+        layout: split
