@@ -5,14 +5,6 @@ We copied the contents of `bin` from the source code at https://github.com/kuber
 
 #### Deploy the CRD to Kubernetes
 
-Since we're using this workshop platform, we need to change the namespace from default to $SESSION_NAMESPACE
-
-```terminal:execute
-command: |
-    echo $SESSION_NAMESPACE
-    sed -i s/default/$SESSION_NAMESPACE/ src/main/resources/*yaml
-```
-
 Create CRD:
 
 ```terminal:execute
