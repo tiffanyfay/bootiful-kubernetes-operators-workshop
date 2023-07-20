@@ -1,12 +1,15 @@
 modules:
     workshop-overview:
         name: Workshop Overview
-        exit_sign: Spring Initializr
+        exit_sign: Start
+    exercises/intro:
+        name: Extending Kubernetes With the Operator Pattern
+        exit_sign: Example operator
     exercises/spring-initializr:
-        name: Spring Initializr
-        exit_sign: Create CRD
+        name: What Will You Build in This Workshop?
+        exit_sign: Custom Resource Definition
     exercises/create-foo-crd:
-        name: Create CRD
+        name: Defining Our Extension of the Kubernetes API
         exit_sign: Controller
     exercises/controller:
         name: Controller

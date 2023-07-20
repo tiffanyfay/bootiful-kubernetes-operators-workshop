@@ -3,7 +3,8 @@ name: Markdown Sample
 modules:
     activate:
     - workshop-overview
-    - exercises/spring-initializr
+    - exercises/intro
+    - exercises/example
     - exercises/create-foo-crd
     - exercises/controller
     - exercises/informer
