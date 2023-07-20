@@ -5,7 +5,7 @@ modules:
     exercises/intro:
         name: Extending Kubernetes With the Operator Pattern
         exit_sign: Example operator
-    exercises/spring-initializr:
+    exercises/example:
         name: What Will You Build in This Workshop?
         exit_sign: Custom Resource Definition
     exercises/create-foo-crd:
