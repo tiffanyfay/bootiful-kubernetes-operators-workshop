@@ -60,7 +60,7 @@ command: |
     kubectl explain foo.spec
 ```
 
-After the CustomResourceDefinition object has been created, you can create custom objects.
+After the CustomResourceDefinition object has been created, you can create custom resources.
 ```editor:append-lines-to-file
 file: ~/my-first-foo.yaml
 description: First custom resource
@@ -76,3 +76,5 @@ text: |2
 command: |
     kubectl create -f my-first-foo.yaml
 ```
+
+On their own, your custom resource lets you store and retrieve structured data. When you combine a custom resource with a custom controller, custom resources provide a true declarative API.
