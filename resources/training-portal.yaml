@@ -8,3 +8,7 @@ spec:
       maximum: 8
   workshops:
   - name: bootiful-kubernetes-operators
+    capacity: 5
+    expires: 2h
+    orphaned: 1h
+    reserved: 0
