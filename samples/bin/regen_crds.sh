@@ -20,5 +20,5 @@ docker run \
   -u $LOCAL_MANIFEST_FILE \
   -n io.spring \
   -p io.spring \
-  -o "$(pwd)"
+  -o "$(pwd)" 
 cp -r /tmp/java/src/main/java/io/spring/models  ${CURRENT_DIR}/../src/main/java/io/spring/
