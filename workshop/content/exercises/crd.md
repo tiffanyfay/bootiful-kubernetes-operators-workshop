@@ -29,8 +29,8 @@ text: |2
               spec:
                 type: object
                 properties:
-                  name:
-                    description: The name of your Foo
+                  nickname:
+                    description: The nickname of your Foo
                     type: string
 ```
 The name of a CRD object must be a valid DNS subdomain name, as in our case `foos.example.com`. 
@@ -61,3 +61,18 @@ command: |
 ```
 
 After the CustomResourceDefinition object has been created, you can create custom objects.
+```editor:append-lines-to-file
+file: ~/my-first-foo.yaml
+description: First custom resource
+text: |2
+  apiVersion: example.com/v1
+  kind: Foo
+  metadata:
+    name: my-first-foo
+  spec:
+    nickname: firsty
+```
+```terminal:execute
+command: |
+    kubectl create -f my-first-foo.yaml
+```
