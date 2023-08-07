@@ -24,6 +24,9 @@ spec:
       terminal:
         enabled: true
         layout: split
+      docker:
+        enabled: true
+        storage: 5Gi
       vcluster:
         enabled: true
         ingress:

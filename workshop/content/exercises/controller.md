@@ -18,7 +18,7 @@ The Spring Initializr will get us most of the way (it does a lot of code generat
 
 ```editor:insert-lines-before-line
 file: controller/build.gradle
-line: 5
+line: 20
 text: |1
      implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
 ```
@@ -26,12 +26,17 @@ text: |1
 #### Generating Java Classes for the CRD
 In order to work with the Kubernetes CRD, we would need to get Java class representations of the CRD.
 
-We can use a utility that will generate the class files from a deployed CRD.
+To generate the class files from a custom resource definition, there is a [containerized utility available](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md).
 
-For this, you need to have docker running and then run the following command.
-
-
-
+As this utility will create a kind cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach and do the same from our workshop cluster.
+```terminal:execute
+command: |
+  LOCAL_MANIFEST_FILE=$(pwd)/foo-crd.yaml && mkdir -p generated && cd generated
+  kubectl get --raw="/openapi/v2" > openapi.yaml
+  docker run --rm --user 1001:1001 -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/openapi.yaml -g java -o /local/result --additional-properties=modelPackage="com.example.controller" --global-property=models="com.example.v1.Foo:com.example.v1.FooList"
+  cd .. && cp -r generated/result/src/main/java/com/example/controller/ controller/src/main/java/com/example/controller/ && rm -rf generated
+clear: true
+```
 #### TMP
 
 We'll need a little script to help us code-generate the Java code for our CRD.
