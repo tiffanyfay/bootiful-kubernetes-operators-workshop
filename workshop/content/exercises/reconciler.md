@@ -13,7 +13,7 @@ text: |1
 	}
 ```
 
-And then one as well for `CoreV1Api` for a`ConfigMap`:
+And then one as well for `CoreV1Api` for a `ConfigMap`:
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
 line: 12
@@ -25,7 +25,19 @@ text: |1
 	}
 ```
 
-Now we can create the reconciler:
+The reconciler will take in a YAML ConfigMap and Deployment so that we have less code to write here. TODO write this better.
+
+The Deployment is just a basic NGINX deployment:
+```editor:open-file
+file: samples/src/main/resources/deployment.yaml
+```
+
+And the ConfigMap allows us to modify the the index.html page:
+```editor:open-file
+file: samples/src/main/resources/configmap.yaml
+```
+
+Now we can create the reconciler. It takes in these YAML files as well as the informers and AppsV1Api and CoreV1Api.
 
 ```editor:insert-lines-before-line
 file: samples/src/main/java/io/spring/ControllersApplication.java
@@ -42,6 +54,22 @@ text: |1
 						  SharedIndexInformer<V1Foo> v1FooSharedIndexInformer, AppsV1Api appsV1Api, CoreV1Api coreV1Api) {
 		return request -> {
 			try {
+
+			} //
+			catch (Throwable e) {
+				log.error("we've got an outer error.", e);
+				return new Result(true, Duration.ofSeconds(60));
+			}
+			return new Result(false);
+		};
+	}
+```
+
+TODO:
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 63
+text: |1
 				// create new one on k apply -f foo.yaml
 				String requestName = request.getName();
 				String key = request.getNamespace() + '/' + requestName;
@@ -56,7 +84,13 @@ text: |1
 				String dryRun = null;
 				String fieldManager = "";
 				String fieldValidation = "";
+```
 
+TODO:
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 79
+text: |1
 				// parameterize configmap
 				String configMapName = "configmap-" + requestName;
 				V1ConfigMap configMap = loadYamlAs(configMapYaml, V1ConfigMap.class);
@@ -69,6 +103,13 @@ text: |1
 							fieldValidation);
 				}, () -> coreV1Api.replaceNamespacedConfigMap(configMapName, namespace, configMap,
 							pretty, dryRun, fieldManager, fieldValidation));
+```
+
+TODO:
+```editor:insert-lines-before-line
+file: samples/src/main/java/io/spring/ControllersApplication.java
+line: 91
+text: |1
 
 				// parameterize deployment
 				String deploymentName = "deployment-" + requestName;
@@ -88,14 +129,6 @@ text: |1
 					return appsV1Api.replaceNamespacedDeployment(deploymentName, namespace, deployment, pretty, dryRun,
 							fieldManager, fieldValidation);
 				});
-			} //
-			catch (Throwable e) {
-				log.error("we've got an outer error.", e);
-				return new Result(true, Duration.ofSeconds(60));
-			}
-			return new Result(false);
-		};
-	}
 ```
 
 Here's where the rubber meets the road: our reconciler will create a new `Deployment` and `ConfigMap` every time a new `Foo` is created. We like you too much to programmatically build up the `Deployment` from scratch in Java, so we'll just reuse a pre-written YAML definition (`/deployment.yaml`) of a `Deployment` and then reify it, changing some of its parameters, and submit that.
