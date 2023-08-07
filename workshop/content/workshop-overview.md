@@ -1,6 +1,11 @@
-Kubernetes is designed for automation.
-It provides lots of built-in automation out-of-the-box to for example deploy and run workloads, and you can automate how Kubernetes does that.
+Kubernetes provides a framework to run distributed systems and applications resiliently.
 
-Kubernetes' **operator pattern** concept lets you **extend the cluster's behavior** without modifying the code of Kubernetes itself. **Operators are clients of the Kubernetes API that act as controllers for a Custom Resource.**
+It provides lots of built-in automation mechanisms to deploy, scale, and update workloads; load balance traffic; and much more.
 
-**This interactive workshop aims to teach you how to build extensions for Kubernetes with operators using your most loved application framework Spring Boot.**
+Kubernetes also provides many extension points to implement new features and behaviors when you need more than what's available out of the box.
+
+One of these extension points is the powerful **operator pattern**, which lets you **extend the cluster's behavior** without modifying the code of Kubernetes itself.
+
+In a nutshell, operators are **clients of the Kubernetes API that act as controllers for a Custom Resource.** We're going to see what that means, and what implementing such an operator entails.
+
+**In this interactive workshop, we will learn how to build extensions for Kubernetes with operators, using our beloved application framework Spring Boot.**
