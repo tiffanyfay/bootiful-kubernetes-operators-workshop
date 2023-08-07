@@ -28,3 +28,6 @@ spec:
         enabled: true
         ingress:
           enabled: true
+    ingresses:
+    - name: controller
+      port: 8080
