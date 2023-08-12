@@ -4,8 +4,6 @@ USER root
 
 COPY --chown=1001:0 . /home/eduk8s/
 
-RUN mv /home/eduk8s/workshop /opt/workshop
-
 RUN apt-get update && apt-get install -y moreutils
 
 USER 1001
