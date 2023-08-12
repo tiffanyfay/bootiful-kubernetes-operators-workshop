@@ -6,7 +6,7 @@ spec:
   title: Bootiful Kubernetes Operators
   description: A workshop that demonstrates how to build Kubernetes operators with Spring Boot.
   workshop:
-    image: ghcr.io/vmware-tanzu-labs/educates-jdk17-environment:2.5.2
+    image: ghcr.io/tiffanyfay/bootiful-kubernetes-operators-workshop:main 
     files:
     - git:
         url: https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop
