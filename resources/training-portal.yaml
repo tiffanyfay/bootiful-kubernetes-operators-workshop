@@ -3,6 +3,9 @@ kind: TrainingPortal
 metadata:
   name: bootiful-kubernetes-operators
 spec:
+  portal:
+    updates:
+      workshop: true
   workshops:
   - name: bootiful-kubernetes-operators
     capacity: 5

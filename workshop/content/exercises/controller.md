@@ -38,10 +38,10 @@ command: |
   docker run --rm --user 1001:1001 -v $PWD:/local \
     openapitools/openapi-generator-cli generate \
       -i /local/openapi.yaml -g java -o /local/result \
-      --additional-properties=modelPackage="io.spring.controller" \
+      --additional-properties=modelPackage="io.spring.controller.models" \
       --global-property=models="io.spring.v1.Foo:io.spring.v1.FooList"
 
-  cd .. && cp -r generated/result/src/main/java/com/example/controller/ controller/src/main/java/com/example/controller/ && rm -rf generated
+  cd .. && cp -r generated/result/src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf generated
 clear: true
 ```
 #### TMP
