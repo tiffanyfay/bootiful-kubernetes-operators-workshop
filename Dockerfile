@@ -4,7 +4,7 @@ USER root
 
 COPY --chown=1001:0 . /home/eduk8s/
 
-RUN apt-get update && apt-get install -y moreutils
+RUN yum install moreutils
 
 USER 1001
 
