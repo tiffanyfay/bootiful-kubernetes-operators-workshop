@@ -28,12 +28,19 @@ In order to work with the Kubernetes CRD, we would need to get Java class repres
 
 To generate the class files from a custom resource definition, there is a [containerized utility available](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md).
 
-As this utility will create a kind cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach and do the same from our workshop cluster.
+As this utility will create a [kind](https://kind.sigs.k8s.io/) cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach and do the same from our workshop cluster.
 ```terminal:execute
 command: |
-  LOCAL_MANIFEST_FILE=$(pwd)/foo-crd.yaml && mkdir -p generated && cd generated
+  mkdir generated && cd $_
+
   kubectl get --raw="/openapi/v2" > openapi.yaml
-  docker run --rm --user 1001:1001 -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/openapi.yaml -g java -o /local/result --additional-properties=modelPackage="com.example.controller" --global-property=models="com.example.v1.Foo:com.example.v1.FooList"
+
+  docker run --rm --user 1001:1001 -v $PWD:/local \
+    openapitools/openapi-generator-cli generate \
+      -i /local/openapi.yaml -g java -o /local/result \
+      --additional-properties=modelPackage="io.spring.controller" \
+      --global-property=models="io.spring.v1.Foo:io.spring.v1.FooList"
+
   cd .. && cp -r generated/result/src/main/java/com/example/controller/ controller/src/main/java/com/example/controller/ && rm -rf generated
 clear: true
 ```

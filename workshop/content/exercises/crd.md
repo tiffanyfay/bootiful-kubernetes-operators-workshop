@@ -8,9 +8,9 @@ text: |2
   apiVersion: apiextensions.k8s.io/v1
   kind: CustomResourceDefinition
   metadata:
-    name: foos.example.com
+    name: foos.spring.io
   spec:
-    group: example.com
+    group: spring.io
     names:
       kind: Foo
       plural: foos
@@ -33,7 +33,7 @@ text: |2
                     description: The nickname of your Foo
                     type: string
 ```
-The name of a CRD object must be a valid DNS subdomain name, as in our case `foos.example.com`. 
+The name of a CRD object must be a valid DNS subdomain name, as in our case `foos.spring.io`. 
 `spec.group` is the API group of the defined custom resource. The custom resources are served under `/apis/<group>/...` and must match the name of the CRD.
 `spec.names` specify the resource and kind names for the custom resource.
 
@@ -44,7 +44,7 @@ CustomResourceDefinitions are available to all namespaces but the resources crea
 The `schema` describes an OpenAPI v3 schema for custom fields used for validation during creation and updates. In our basic example a custom field `spec.name` of a `Foo` resource.
 
 
-After the creation of our CRD a new namespaced REST API endpoint is created at `/apis/foos.example.com/v1/namespaces/*/foos/...`.
+After the creation of our CRD a new namespaced REST API endpoint is created at `/apis/foos.spring.io/v1/namespaces/*/foos/...`.
 ```terminal:execute
 command: |
     kubectl create -f foo-crd.yaml
@@ -53,7 +53,7 @@ command: |
 With the following commands, you can fetch information about our CRD via the kubectl CLI.
 ```terminal:execute
 command: |
-    kubectl get crds foos.example.com
+    kubectl get crds foos.spring.io
 ```
 ```terminal:execute
 command: |
@@ -65,7 +65,7 @@ After the CustomResourceDefinition object has been created, you can create custo
 file: ~/my-first-foo.yaml
 description: First custom resource
 text: |2
-  apiVersion: example.com/v1
+  apiVersion: spring.io/v1
   kind: Foo
   metadata:
     name: my-first-foo
