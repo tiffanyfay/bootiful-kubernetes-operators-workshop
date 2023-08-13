@@ -14,13 +14,14 @@ command: |
 clear: true
 ```
 
-The Spring Initializr will get us most of the way (it does a lot of code generation) but we need to add a dependency not available at start.spring.io – the official Java client for Kubernetes.
+The Spring Initializr will get us most of the way (it does a lot of code generation) but we need to add two dependencies not available at start.spring.io. The official Java client for Kubernetes, and integration with the JSON mapping library Jackson.
 
 ```editor:insert-lines-before-line
 file: controller/build.gradle
 line: 20
 text: |1
      implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
+     implementation 'org.springframework.boot:spring-boot-starter-json'
 ```
 
 #### Generating Java Classes for the CRD
@@ -39,7 +40,7 @@ command: |
     openapitools/openapi-generator-cli generate \
       -i /local/openapi.json -g java -o /local/result \
       --additional-properties=modelPackage="io.spring.controller.models",library="webclient",useJakartaEe="true" \
-      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.spring.v1.FooList",apiDocs=false,modelDocs=false,modelTests=false
+      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.spring.v1.FooList:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",apiDocs=false,modelDocs=false,modelTests=false
 
   cd .. && cp -r generated/result/src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf generated
 clear: true
