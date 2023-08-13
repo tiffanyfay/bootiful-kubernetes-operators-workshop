@@ -40,7 +40,7 @@ command: |
     openapitools/openapi-generator-cli generate \
       -i /local/openapi.json -g java -o /local/result \
       --additional-properties=modelPackage="io.spring.controller.models",library="webclient",useJakartaEe="true" \
-      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.spring.v1.FooList:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",apiDocs=false,modelDocs=false,modelTests=false
+      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.spring.v1.FooList:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta:io.k8s.apimachinery.pkg.apis.meta.v1.OwnerReference:io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsEntry",apiDocs=false,modelDocs=false,modelTests=false
 
   cd .. && cp -r generated/result/src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf generated
 clear: true
