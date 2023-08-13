@@ -2,4 +2,4 @@
 set -x
 set +e
 
-docker pull openapitools/openapi-generator-cli:latest
+mv samples/foo-crd.yaml .

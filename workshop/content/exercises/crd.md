@@ -1,37 +1,8 @@
 The CustomResourceDefinition API resource allows you to define custom resources. Defining a CRD object creates a new custom resource with a name and schema that you specify. The Kubernetes API serves and handles the storage of your custom resource. 
 
-Run the following command to generate the Foo the custom resource definition.
-```editor:append-lines-to-file
+Let's have a look at the Foo the custom resource definition.
+```editor:open-file
 file: ~/foo-crd.yaml
-description: Generate Foo custom resource definition
-text: |2
-  apiVersion: apiextensions.k8s.io/v1
-  kind: CustomResourceDefinition
-  metadata:
-    name: foos.spring.io
-  spec:
-    group: spring.io
-    names:
-      kind: Foo
-      plural: foos
-      singular: foo
-    scope: Namespaced
-    versions:
-      - name: v1
-        # Each version can be enabled/disabled by Served flag.
-        served: true
-        # One and only one version must be marked as the storage version.
-        storage: true
-        schema:
-          openAPIV3Schema:
-            type: object
-            properties:
-              spec:
-                type: object
-                properties:
-                  nickname:
-                    description: The nickname of your Foo
-                    type: string
 ```
 The name of a CRD object must be a valid DNS subdomain name, as in our case `foos.spring.io`. 
 `spec.group` is the API group of the defined custom resource. The custom resources are served under `/apis/<group>/...` and must match the name of the CRD.

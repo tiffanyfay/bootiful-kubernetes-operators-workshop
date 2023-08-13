@@ -27,24 +27,17 @@ text: |1
 #### Generating Java Classes for the CRD
 In order to work with the Kubernetes CRD, we would need to get Java class representations of the CRD.
 
-To generate the class files from a custom resource definition, there is a [containerized utility available](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md).
+To generate the class files from a custom resource definition, there is a [containerized utility](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md#remote-generate-via-github-action) available.
 
-As this utility will create a [kind](https://kind.sigs.k8s.io/) cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach and do the same from our workshop cluster.
+As this utility will create a [kind](https://kind.sigs.k8s.io/) Kubernetes cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach in this workshop and download already generated Java classes by a [GitHub Action using this containerized utility](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md#remote-generate-via-github-action). 
 ```terminal:execute
 command: |
-  mkdir generated && cd $_
-
-  kubectl get --raw="/openapi/v2" > openapi.json
-
-  docker run --rm --user 1001:1001 -v $PWD:/local \
-    openapitools/openapi-generator-cli generate \
-      -i /local/openapi.json -g java -o /local/result \
-      --additional-properties=modelPackage="io.spring.controller.models",library="webclient",useJakartaEe="true" \
-      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.spring.v1.FooList:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta:io.k8s.apimachinery.pkg.apis.meta.v1.OwnerReference:io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsEntry",apiDocs=false,modelDocs=false,modelTests=false
-
-  cd .. && cp -r generated/result/src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf generated
+  wget https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop/releases/download/2023-08-13/generated-crd-classes.zip && unzip generated-crd-classes.zip && cp -r src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf src
+description: Download generated Java classes and move them to controller project
 clear: true
 ```
+
+
 #### TMP
 
 We'll need a little script to help us code-generate the Java code for our CRD.

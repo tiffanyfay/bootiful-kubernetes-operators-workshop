@@ -4,7 +4,7 @@ USER root
 
 COPY --chown=1001:0 . /home/eduk8s/
 
-RUN yum install moreutils -y
+RUN yum install moreutils wget -y
 
 USER 1001
 
