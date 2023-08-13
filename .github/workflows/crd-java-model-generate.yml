@@ -38,7 +38,7 @@ jobs:
       - name: Release with Notes
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ env.GEN_DIR }}
+          files: ${{ env.GEN_DIR }}/
           tag_name: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
