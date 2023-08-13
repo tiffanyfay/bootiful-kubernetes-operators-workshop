@@ -31,8 +31,8 @@ jobs:
             ${IMAGE_NAME}:${IMAGE_TAG} \
             /generate.sh \
             -u $LOCAL_MANIFEST_FILE \
-            -n foos.spring.io \
-            -p io.spring.controller.models \
+            -n spring.io \
+            -p io.spring.controller \
             -o "$(pwd)/${GEN_DIR}"
           ls -lh ${GEN_DIR}
       - uses: actions/upload-artifact@v3
