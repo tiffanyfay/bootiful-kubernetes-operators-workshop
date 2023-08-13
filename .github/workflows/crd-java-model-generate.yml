@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Run CRD Model Generation
         run: |
+          LOCAL_MANIFEST_FILE=$(pwd)/samples/foo-crd.yaml
           mkdir -p ${GEN_DIR}
           docker run \
             --rm \
@@ -29,7 +30,7 @@ jobs:
             --network host \
             ${IMAGE_NAME}:${IMAGE_TAG} \
             /generate.sh \
-            $(pwd)/samples/foo-crd.yaml \
+            -u $LOCAL_MANIFEST_FILE \
             -n foos.spring.io \
             -p io.spring.controller.models \
             -o "$(pwd)/${GEN_DIR}"
@@ -39,3 +40,29 @@ jobs:
           name: generated-java-crd-model
           path: |
             ${{ env.GEN_DIR }}
+
+
+
+
+
+
+
+            mkdir -p /tmp/crds && cd /tmp/crds
+wget https://gist.githubusercontent.com/yue9944882/266fee8e95c2f15a93778263633e72ed/raw/be12c13379eeed13d2532cb65da61fffb19ee3e7/crontab-crd.yaml
+
+# Local generation
+LOCAL_MANIFEST_FILE=/tmp/crds/crontab-crd.yaml
+mkdir -p /tmp/java && cd /tmp/java
+docker run \
+  --rm \
+  -v "$LOCAL_MANIFEST_FILE":"$LOCAL_MANIFEST_FILE" \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v "$(pwd)":"$(pwd)" \
+  -ti \
+  --network host \
+  ghcr.io/kubernetes-client/java/crd-model-gen:v1.0.6 \
+  /generate.sh \
+  -u $LOCAL_MANIFEST_FILE \
+  -n com.example.stable \
+  -p com.example.stable \
+  -o "$(pwd)"
