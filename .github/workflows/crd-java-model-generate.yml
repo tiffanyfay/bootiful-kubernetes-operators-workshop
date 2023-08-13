@@ -11,7 +11,7 @@ env:
   GEN_DIR: crd-gen
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
