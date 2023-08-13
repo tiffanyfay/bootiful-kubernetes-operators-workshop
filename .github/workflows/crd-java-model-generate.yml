@@ -25,6 +25,7 @@ jobs:
           mkdir -p ${GEN_DIR}
           docker run \
             --rm \
+            --env LIBRARY=webclient \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v "$(pwd)":"$(pwd)" \
             --network host \
