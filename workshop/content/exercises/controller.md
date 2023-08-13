@@ -33,13 +33,14 @@ As this utility will create a [kind](https://kind.sigs.k8s.io/) cluster to fetch
 command: |
   mkdir generated && cd $_
 
-  kubectl get --raw="/openapi/v2" > openapi.yaml
+  kubectl get --raw="/openapi/v2" > openapi.json
 
   docker run --rm --user 1001:1001 -v $PWD:/local \
     openapitools/openapi-generator-cli generate \
       -i /local/openapi.yaml -g java -o /local/result \
-      --additional-properties=modelPackage="io.spring.controller.models" \
-      --global-property=models="io.spring.v1.Foo:io.spring.v1.FooList"
+      --model-name-prefix='' \
+      --additional-properties=modelPackage="io.spring.controller.models",library="webclient",useJakartaEe="true" \
+      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.spring.v1.FooList"
 
   cd .. && cp -r generated/result/src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf generated
 clear: true
