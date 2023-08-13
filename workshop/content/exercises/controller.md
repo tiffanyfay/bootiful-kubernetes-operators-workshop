@@ -36,6 +36,9 @@ command: |
 description: Download generated Java classes and move them to controller project
 clear: true
 ```
+```editor:open-file
+file: controller/src/main/java/io/spring/controller/models/V1Foo.java
+```
 
 #### TMP
 
