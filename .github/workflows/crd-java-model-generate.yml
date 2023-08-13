@@ -38,7 +38,7 @@ jobs:
       - name: Zip generated files
         shell: bash
         run: |
-          zip generated-crd-classes.zip -r ${GEN_DIR}/*
+          (cd ${GEN_DIR} && zip -r ../generated-crd-classes.zip .)
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
