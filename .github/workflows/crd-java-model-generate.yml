@@ -9,23 +9,6 @@ env:
   CRDS: 'samples/foo-crd.yaml'
   PACKAGE_NAME: 'io.spring.controller.models'
   API_GROUP_PREFIX: 'foos.spring.io'
-on:
-  workflow_dispatch:
-    inputs:
-      crds:
-        type: string
-        required: true
-        description: 'Comma-separated paths to CRD yaml sources, can be either HTTP url or local file path.'
-      generatingJavaPackage:
-        type: string
-        required: true
-        description: 'The package name of the generated java project.'
-      crdApiGroupPrefix:
-        type: string
-        required: false
-        description: 'The prefix of the target CRDs api group to generate. (Optional)'
-
-env:
   IMAGE_NAME: ghcr.io/kubernetes-client/java/crd-model-gen
   IMAGE_TAG: v1.0.6
   GEN_DIR: crd-gen
