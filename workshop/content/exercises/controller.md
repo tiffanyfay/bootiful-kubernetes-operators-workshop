@@ -37,10 +37,9 @@ command: |
 
   docker run --rm --user 1001:1001 -v $PWD:/local \
     openapitools/openapi-generator-cli generate \
-      -i /local/openapi.yaml -g java -o /local/result \
-      --model-name-prefix='' \
+      -i /local/openapi.json -g java -o /local/result \
       --additional-properties=modelPackage="io.spring.controller.models",library="webclient",useJakartaEe="true" \
-      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.spring.v1.FooList"
+      --global-property=models="io.spring.v1.Foo:io_spring_v1_Foo_spec:io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta:io.spring.v1.FooList",apiDocs=false,modelDocs=false,modelTests=false
 
   cd .. && cp -r generated/result/src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf generated
 clear: true
