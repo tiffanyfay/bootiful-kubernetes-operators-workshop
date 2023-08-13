@@ -6,9 +6,6 @@ on:
     paths: ['samples/foo-crd.yaml']
 
 env:
-  CRDS: 'samples/foo-crd.yaml'
-  PACKAGE_NAME: 'io.spring.controller.models'
-  API_GROUP_PREFIX: 'foos.spring.io'
   IMAGE_NAME: ghcr.io/kubernetes-client/java/crd-model-gen
   IMAGE_TAG: v1.0.6
   GEN_DIR: crd-gen
@@ -24,10 +21,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Run CRD Model Generation
         run: |
-          read CRD_SRC_ARGS < <(echo '${{ env.CRDS }}' | perl -ne 'print join " ", map {"-u $_"} split /,/')
-          export CRD_API_GROUP_ARGS="-n ${{ env.API_GROUP_PREFIX }}"
-          echo "CRD Src Args: ${CRD_SRC_ARGS}"
-          echo "CRD Api Group Prefix Args: ${CRD_API_GROUP_ARGS}"
           mkdir -p ${GEN_DIR}
           docker run \
             --rm \
@@ -36,9 +29,9 @@ jobs:
             --network host \
             ${IMAGE_NAME}:${IMAGE_TAG} \
             /generate.sh \
-            ${CRD_SRC_ARGS} \
-            ${CRD_API_GROUP_ARGS} \
-            -p ${{ env.PACKAGE_NAME }} \
+            $(pwd)/samples/foo-crd.yaml \
+            -n foos.spring.io \
+            -p io.spring.controller.models \
             -o "$(pwd)/${GEN_DIR}"
           ls -lh ${GEN_DIR}
       - uses: actions/upload-artifact@v3
