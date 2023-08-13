@@ -35,10 +35,21 @@ jobs:
             -p io.spring.controller \
             -o "$(pwd)/${GEN_DIR}"
           ls -lh ${GEN_DIR}
-      - name: Release with Notes
+      - name: Zip generated files
+        shell: bash
+        run: |
+          zip generated-crd-classes.zip -r ${GEN_DIR}/*
+      - name: Delete old release
+        uses: dev-drprasad/delete-tag-and-release@v0.2.1
+        with:
+          tag_name: latest
+          delete_release: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ env.GEN_DIR }}/
+          files: generated-crd-classes.zip
           tag_name: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
