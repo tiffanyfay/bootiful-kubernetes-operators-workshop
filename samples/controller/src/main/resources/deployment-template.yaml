@@ -1,0 +1,26 @@
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  name: replace-me
+spec:
+  selector:
+    matchLabels:
+      app: replace-me
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: replace-me
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-index-file
+              mountPath: /usr/share/nginx/html/
+      volumes:
+        - name: nginx-index-file
+          configMap:
+            name: replace-me

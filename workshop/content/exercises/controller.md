@@ -40,42 +40,58 @@ clear: true
 file: controller/src/main/java/io/spring/controller/models/V1Foo.java
 ```
 
-#### TMP
+Now we have the Java class representations of the CRD and can start with the implementation of the controller itself.
 
-We'll need a little script to help us code-generate the Java code for our CRD.
+#### Implementing the Controller
 
-```shell
-    ./samples/bin/regen_crds.sh
+```editor:append-lines-to-file
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
+description: Create initial controller configuration
+text: |2
+  package io.spring.controller;
+  
+  import io.kubernetes.client.extended.controller.Controller;
+  import io.kubernetes.client.extended.controller.builder.ControllerBuilder;
+  import io.kubernetes.client.extended.controller.reconciler.Reconciler;
+  import io.kubernetes.client.informer.SharedIndexInformer;
+  import io.kubernetes.client.informer.SharedInformerFactory;
+  import io.spring.controller.models.V1Foo;
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+
+  import java.time.Duration;
+
+  @Configuration
+  public class ControllerConfiguration {
+
+      @Bean
+      Controller controller(SharedInformerFactory sharedInformerFactory,
+                            SharedIndexInformer<V1Foo> informer,
+                            Reconciler reconciler) {
+          var builder = ControllerBuilder
+                  .defaultBuilder(sharedInformerFactory)
+                  .watch(q -> ControllerBuilder
+                          .controllerWatchBuilder(V1Foo.class, q)
+                          .withResyncPeriod(Duration.ofSeconds(30))
+                          .build())
+                  .withWorkerCount(2);
+          return builder
+                  .withReconciler(reconciler)
+                  .withReadyFunc(informer::hasSynced)
+                  .withName("fooController")
+                  .build();
+      }
+  }
 ```
 
-We already ran it and the files are in `samples/src/main/java/io/spring/models`.
-
-
-
-
-```editor:insert-lines-before-line
-file: samples/src/main/java/io/spring/ControllersApplication.java
-line: 12
-text: |1
-
-    @Bean(destroyMethod = "shutdown")
-    Controller controller(SharedInformerFactory sharedInformerFactory,
-                          SharedIndexInformer<V1Foo> fooNodeInformer,
-                          Reconciler reconciler) {
-        var builder = ControllerBuilder //
-                .defaultBuilder(sharedInformerFactory)//
-                .watch((q) -> ControllerBuilder //
-                        .controllerWatchBuilder(V1Foo.class, q)
-                        .withResyncPeriod(Duration.ofHours(1)).build() //
-                ) //
-                .withWorkerCount(2);
-        return builder
-                .withReconciler(reconciler) //
-                .withReadyFunc(fooNodeInformer::hasSynced) // optional: only start once the index is synced
-                .withName("fooController") ///
-                .build();
-
-    }
+If we run the tests of our applications, we can see that things are broken.
+```terminal:execute
+command: |
+  (cd controller && ./gradlew test)
+clear: true
 ```
+```
+No qualifying bean of type 'io.kubernetes.client.informer.SharedIndexInformer<io.spring.controller.models.V1Foo>' available
+``
 
-Things are broken! We don't have any of the three dependencies expressed here: `SharedInformerFactory`, `SharedIndexInformer<V1Foo>`, and `Reconciler`.
+Let's configure a bean of type SharedIndexInformer<V1Foo> in the following section.
