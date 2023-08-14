@@ -70,7 +70,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 34
+line: 36
 text: |2
 
       private V1ConfigMap getConfigMap(String name, V1Foo resource, Map<String, String> configMapContent) {
@@ -87,7 +87,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 46
+line: 48
 text: |2
 
       private V1OwnerReference getOwnerReference(V1Foo owner) {
