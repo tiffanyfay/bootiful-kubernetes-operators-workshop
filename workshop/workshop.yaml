@@ -9,7 +9,6 @@ modules:
     - exercises/controller
     - exercises/informer
     - exercises/reconciler
-    - exercises/imports
     - exercises/run-app
     - exercises/graalvm
     - workshop-summary

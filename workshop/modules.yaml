@@ -19,9 +19,6 @@ modules:
         exit_sign: Reconciler
     exercises/reconciler:
         name: Reconciler
-        exit_sign: Imports
-    exercises/imports:
-        name: Imports
         exit_sign: Run App
     exercises/run-app:
         name: Run App

@@ -238,8 +238,8 @@ file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.ja
 line: 33
 text: |2
 
-    @Bean
-    Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer) {
-        return new FooReconciler(parentInformer);
-    }
+      @Bean
+      Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer) {
+          return new FooReconciler(parentInformer);
+      }
 ```
