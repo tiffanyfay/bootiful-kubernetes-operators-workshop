@@ -32,7 +32,7 @@ To generate the class files from a custom resource definition, there is a [conta
 As this utility will create a [kind](https://kind.sigs.k8s.io/) Kubernetes cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach in this workshop and download already generated Java classes by a [GitHub Action using this containerized utility](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md#remote-generate-via-github-action). 
 ```terminal:execute
 command: |
-  wget https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop/releases/download/2023-08-13/generated-crd-classes.zip && unzip generated-crd-classes.zip && cp -r src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf src && rm generated-crd-classes.zip
+  wget https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop/releases/download/2023-08-14/generated-crd-classes.zip && unzip generated-crd-classes.zip && cp -r src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf src && rm generated-crd-classes.zip
 description: Download generated Java classes and move them to controller project
 clear: true
 ```
