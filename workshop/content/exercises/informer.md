@@ -8,7 +8,7 @@ First, we need to create a `GenericKubernetesApi` for our generated Foo classes.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 22
+line: 19
 text: |2
 
     @Bean
@@ -20,7 +20,7 @@ text: |2
 Now, let's add the `SharedIndexInformer` and the missing imports.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 27
+line: 24
 text: |2
 
     @Bean
