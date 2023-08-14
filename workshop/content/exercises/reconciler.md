@@ -27,8 +27,9 @@ text: |2
 Get resource related to request from Cache.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 15
+line: 14
 text: |2
+
           var namespace = request.getNamespace();
           var name  = request.getName();
           var lister = new Lister<>(informer.getIndexer(), namespace);
@@ -36,12 +37,12 @@ text: |2
           if (resource == null || resource.getMetadata().getDeletionTimestamp() != null) {
               return new Result(false);
           }
-
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 12
 text: |2
+
       private final SharedIndexInformer<V1Foo> informer;
       public FooReconciler(SharedIndexInformer<V1Foo> informer) {
           this.informer = informer;
@@ -60,11 +61,10 @@ text: |2
 Create ConfigMap.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 29
+line: 30
 text: |2
           var configMapContent = Map.of("index.html", "<h1> Hello, " + resource.getSpec().getNickname() + " </h1>");
           var configMap = getConfigMap(name, resource, configMapContent);
-
 
 ```
 ```editor:insert-lines-before-line

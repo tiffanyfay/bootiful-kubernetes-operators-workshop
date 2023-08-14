@@ -103,7 +103,7 @@ text: |2
       }
 ```
 ```editor:insert-lines-before-line
-file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 11
 text: |2
   import org.springframework.boot.CommandLineRunner;
@@ -112,10 +112,10 @@ text: |2
 ```
 
 
-If we run our application, we can see that things are broken.
+If we run the tests of our application, we can see that things are broken.
 ```terminal:execute
 command: |
-  (cd controller && ./gradlew bootRun)
+  (cd controller && ./gradlew bootTest)
 clear: true
 ```
 ```

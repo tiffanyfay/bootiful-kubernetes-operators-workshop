@@ -39,10 +39,10 @@ text: |2
   import io.kubernetes.client.openapi.ApiClient;
 ```
 
-If we run our application again, we can see that things are still broken.
+If we run the tests of our application again, we can see that things are still broken.
 ```terminal:execute
 command: |
-  (cd controller && ./gradlew bootRun)
+  (cd controller && ./gradlew bootTest)
 clear: true
 ```
 ```
