@@ -86,7 +86,7 @@ text: |2
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 15
+line: 34
 text: |2
 
       @Bean
