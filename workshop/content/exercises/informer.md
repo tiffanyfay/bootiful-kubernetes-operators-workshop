@@ -26,7 +26,6 @@ text: |2
 ```
 
 Now, let's add the `SharedIndexInformer`.
-
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 24
@@ -49,4 +48,4 @@ clear: true
 Parameter 2 of method controller in io.spring.controller.ControllerConfiguration required a bean of type 'io.kubernetes.client.extended.controller.reconciler.Reconciler' that could not be found.
 ```
 
-In the next section, we will finally implement the functionality of our customer resource in the form of a **Reconciler**, which will be provided as a bean to fix the error.
+In the next section, we will finally implement the functionality of our custom resource in the form of a **Reconciler**, which will be provided as a bean to fix the error.

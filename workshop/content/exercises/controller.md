@@ -84,6 +84,34 @@ text: |2
   }
 ```
 
+```editor:insert-lines-before-line
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
+line: 33
+text: |2
+
+    @Bean
+    ExecutorService executorService() {
+        return Executors.newCachedThreadPool();
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(SharedInformerFactory sharedInformerFactory, Controller controller) {
+        return args -> Executors.newSingleThreadExecutor().execute(() -> {
+            sharedInformerFactory.startAllRegisteredInformers();
+            controller.run();
+        });
+    }
+```
+```editor:insert-lines-before-line
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+line: 7
+text: |2
+  import org.springframework.boot.CommandLineRunner;
+  import java.util.concurrent.ExecutorService;
+  import java.util.concurrent.Executors;
+```
+
+
 If we run the tests of our applications, we can see that things are broken.
 ```terminal:execute
 command: |
