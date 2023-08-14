@@ -192,7 +192,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 84
+line: 86
 text: |2
 
         private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
