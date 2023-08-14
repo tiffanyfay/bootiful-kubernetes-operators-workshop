@@ -25,3 +25,6 @@ spec:
                 nickname:
                   description: The nickname of your Foo
                   type: string
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true

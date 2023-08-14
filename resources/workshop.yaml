@@ -13,9 +13,9 @@ spec:
         ref: origin/main
   session:
     namespaces:
-      budget: small
+      budget: budget
       security:
-        policy: restricted
+        policy: baseline
     applications:
       console:
         enabled: true
