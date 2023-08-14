@@ -89,22 +89,22 @@ file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.ja
 line: 34
 text: |2
 
-    @Bean
-    ExecutorService executorService() {
-        return Executors.newCachedThreadPool();
-    }
+      @Bean
+      ExecutorService executorService() {
+          return Executors.newCachedThreadPool();
+      }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(SharedInformerFactory sharedInformerFactory, Controller controller) {
-        return args -> Executors.newSingleThreadExecutor().execute(() -> {
-            sharedInformerFactory.startAllRegisteredInformers();
-            controller.run();
-        });
-    }
+      @Bean
+      public CommandLineRunner commandLineRunner(SharedInformerFactory sharedInformerFactory, Controller controller) {
+          return args -> Executors.newSingleThreadExecutor().execute(() -> {
+              sharedInformerFactory.startAllRegisteredInformers();
+              controller.run();
+          });
+      }
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 7
+line: 11
 text: |2
   import org.springframework.boot.CommandLineRunner;
   import java.util.concurrent.ExecutorService;
@@ -112,14 +112,14 @@ text: |2
 ```
 
 
-If we run the tests of our applications, we can see that things are broken.
+If we run our applications, we can see that things are broken.
 ```terminal:execute
 command: |
-  (cd controller && ./gradlew test)
+  (cd controller && ./gradlew bootRun)
 clear: true
 ```
 ```
-No qualifying bean of type 'io.kubernetes.client.informer.SharedIndexInformer<io.spring.controller.models.V1Foo>' available
+Parameter 1 of method controller in io.spring.controller.ControllerConfiguration required a bean of type 'io.kubernetes.client.informer.SharedIndexInformer' that could not be found.
 ``
 
 Let's configure a bean of type SharedIndexInformer<V1Foo> in the following section.

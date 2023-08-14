@@ -8,15 +8,7 @@ First, we need to create a `GenericKubernetesApi` for our generated Foo classes.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 9
-text: |2
-  import io.spring.controller.models.V1FooList;
-  import io.kubernetes.client.util.generic.GenericKubernetesApi;
-  import io.kubernetes.client.openapi.ApiClient;
-```
-```editor:insert-lines-before-line
-file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 16
+line: 22
 text: |2
 
     @Bean
@@ -25,10 +17,10 @@ text: |2
     }
 ```
 
-Now, let's add the `SharedIndexInformer`.
+Now, let's add the `SharedIndexInformer` and the missing imports.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 24
+line: 27
 text: |2
 
     @Bean
@@ -36,6 +28,15 @@ text: |2
         GenericKubernetesApi<V1Foo, V1FooList> api) {
       return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
     }
+```
+
+```editor:insert-lines-before-line
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
+line: 9
+text: |2
+  import io.spring.controller.models.V1FooList;
+  import io.kubernetes.client.util.generic.GenericKubernetesApi;
+  import io.kubernetes.client.openapi.ApiClient;
 ```
 
 If we run the tests of our applications, we can see that things are still broken.
