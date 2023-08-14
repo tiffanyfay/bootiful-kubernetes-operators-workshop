@@ -63,6 +63,7 @@ Create ConfigMap.
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 30
 text: |2
+
           var configMapContent = Map.of("index.html", "<h1> Hello, " + resource.getSpec().getNickname() + " </h1>");
           var configMap = getConfigMap(name, resource, configMapContent);
 
