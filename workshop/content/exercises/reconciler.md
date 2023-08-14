@@ -122,18 +122,18 @@ file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 62
 text: |2
 
-        private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
-            var configMapApi = new CoreV1Api();
-            var name = configMap.getMetadata().getName();
-            var namespace = configMap.getMetadata().getNamespace();
-            var configMapList = configMapApi.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
-            boolean configMapExist = configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
-            if (configMapExist) {
-                configMapApi.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
-            } else {
-                configMapApi.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
-            }
-        }
+      private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
+          var configMapApi = new CoreV1Api();
+          var name = configMap.getMetadata().getName();
+          var namespace = configMap.getMetadata().getNamespace();
+          var configMapList = configMapApi.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
+          boolean configMapExist = configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
+          if (configMapExist) {
+              configMapApi.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
+          } else {
+              configMapApi.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
+          }
+      }
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -147,8 +147,9 @@ text: |2
 Create and apply Deployment.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 44
+line: 45
 text: |2
+
           try {
               var deployment = getDeployment(name, resource);
               applyDeployment(deployment);
