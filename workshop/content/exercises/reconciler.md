@@ -19,6 +19,7 @@ text: |2
 
       @Override
       public Result reconcile(Request request) {
+
           return new Result(false);
       }
   }
@@ -27,9 +28,8 @@ text: |2
 Get resource related to request from Cache.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 15
+line: 16
 text: |2
-
           var namespace = request.getNamespace();
           var name  = request.getName();
           var lister = new Lister<>(informer.getIndexer(), namespace);
