@@ -91,7 +91,7 @@ line: 48
 text: |2
 
       private V1OwnerReference getOwnerReference(V1Foo owner) {
-        return new V1OwnerReferenceBuilder().withApiVersion(owner.getApiVersion()).withKind(owner.getKind())
+          return new V1OwnerReferenceBuilder().withApiVersion(owner.getApiVersion()).withKind(owner.getKind())
                 .withName(owner.getMetadata().getName()).withUid(owner.getMetadata().getUid()).withController().build();
       }
 ```
@@ -107,7 +107,7 @@ text: |2
 Apply ConfigMap.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 35
+line: 36
 text: |2
           try {
               applyConfigMap(configMap);
@@ -119,7 +119,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 60
+line: 62
 text: |2
 
         private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
