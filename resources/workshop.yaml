@@ -27,6 +27,8 @@ spec:
       docker:
         enabled: true
         storage: 5Gi
+      registry:
+        enabled: true
       vcluster:
         enabled: true
         ingress:
