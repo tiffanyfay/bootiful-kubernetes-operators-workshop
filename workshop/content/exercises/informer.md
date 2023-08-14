@@ -11,10 +11,10 @@ file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.ja
 line: 19
 text: |2
 
-    @Bean
-    GenericKubernetesApi<V1Foo, V1FooList> foosApi(ApiClient apiClient) {
-      return new GenericKubernetesApi<>(V1Foo.class, V1FooList.class, "spring.io", "v1", "foos", apiClient);
-    }
+      @Bean
+      GenericKubernetesApi<V1Foo, V1FooList> foosApi(ApiClient apiClient) {
+        return new GenericKubernetesApi<>(V1Foo.class, V1FooList.class, "spring.io", "v1", "foos", apiClient);
+      }
 ```
 
 Now, let's add the `SharedIndexInformer` and the missing imports.
@@ -23,11 +23,11 @@ file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.ja
 line: 24
 text: |2
 
-    @Bean
-    SharedIndexInformer<V1Foo> foosSharedIndexInformer(SharedInformerFactory sharedInformerFactory,
-        GenericKubernetesApi<V1Foo, V1FooList> api) {
-      return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
-    }
+      @Bean
+      SharedIndexInformer<V1Foo> foosSharedIndexInformer(SharedInformerFactory sharedInformerFactory,
+          GenericKubernetesApi<V1Foo, V1FooList> api) {
+        return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
+      }
 ```
 
 ```editor:insert-lines-before-line
@@ -39,10 +39,10 @@ text: |2
   import io.kubernetes.client.openapi.ApiClient;
 ```
 
-If we run the tests of our applications, we can see that things are still broken.
+If we run our application again, we can see that things are still broken.
 ```terminal:execute
 command: |
-  (cd controller && ./gradlew test)
+  (cd controller && ./gradlew bootRun)
 clear: true
 ```
 ```

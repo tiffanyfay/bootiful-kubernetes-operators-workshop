@@ -86,7 +86,7 @@ text: |2
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 34
+line: 15
 text: |2
 
       @Bean
@@ -112,7 +112,7 @@ text: |2
 ```
 
 
-If we run our applications, we can see that things are broken.
+If we run our application, we can see that things are broken.
 ```terminal:execute
 command: |
   (cd controller && ./gradlew bootRun)
