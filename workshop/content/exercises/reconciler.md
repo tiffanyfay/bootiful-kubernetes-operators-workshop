@@ -27,7 +27,7 @@ text: |2
 Get resource related to request from Cache.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 14
+line: 15
 text: |2
 
           var namespace = request.getNamespace();
