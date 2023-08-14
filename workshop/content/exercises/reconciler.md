@@ -195,30 +195,30 @@ file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 86
 text: |2
 
-        private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
-            var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
-                    "deployment-template.yaml").getURI()));
-            deploymentYaml.replaceAll("replace-me", name);
-            return Yaml.loadAs(deploymentYaml, V1Deployment.class);
-        }
+      private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
+          var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
+                  "deployment-template.yaml").getURI()));
+          deploymentYaml.replaceAll("replace-me", name);
+          return Yaml.loadAs(deploymentYaml, V1Deployment.class);
+      }
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 91
+line: 93
 text: |2
 
-        private void applyDeployment(V1Deployment deployment) throws ApiException {
-            var deploymentApi = new AppsV1Api();
-            var name = deployment.getMetadata().getName();
-            var namespace = deployment.getMetadata().getNamespace();
-            var deploymentList = deploymentApi.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
-            boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
-            if (deploymentExist) {
-                deploymentApi.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
-            } else {
-                deploymentApi.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
-            }
-        }
+      private void applyDeployment(V1Deployment deployment) throws ApiException {
+          var deploymentApi = new AppsV1Api();
+          var name = deployment.getMetadata().getName();
+          var namespace = deployment.getMetadata().getNamespace();
+          var deploymentList = deploymentApi.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
+          boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
+          if (deploymentExist) {
+              deploymentApi.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
+          } else {
+              deploymentApi.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
+          }
+      }
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
