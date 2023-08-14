@@ -1,7 +1,7 @@
 #### Build container image for the controller and push it to registry
 
 ```terminal:execute
-command: (cd ~/controller/ && ./gradlew bootBuildImage --imageName=$REGISTRY_HOST/foo-controller --publishImage)
+command: (cd ~/controller/ && ./gradlew bootBuildImage --imageName={{ ENV_REGISTRY_HOST}}/foo-controller --publishImage)
 clear: true
 ```
 
@@ -55,7 +55,7 @@ text: |2
           app: foo-controller
       spec:
         containers:
-        - image: {{ ENV_REGISTRY_HOST}} /foo-controller
+        - image: {{ ENV_REGISTRY_HOST}}/foo-controller
           name: foo-controller
 ```
 ```terminal:execute
