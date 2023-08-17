@@ -26,10 +26,10 @@ text: |2
       verbs: [get, list, watch]
     - apiGroups: [""]
       resources: [configmaps]
-      verbs: [get, list, create, update, delete]  
+      verbs: [get, list, create, update]  
     - apiGroups: [apps]
       resources: [deployments]
-      verbs: [get, list, create, update, delete]  
+      verbs: [get, list, create, update]  
   ---
   apiVersion: rbac.authorization.k8s.io/v1
   kind: ClusterRoleBinding
@@ -82,5 +82,5 @@ clear: true
 
 ```dashboard:create-dashboard
 name: My first Foo
-url: https://my-first-foo-$(session_namespace).$(ingress_domain)
+url: https://my-first-foo-{{ session_namespace }}.{{ ingress_domain }}
 ```
