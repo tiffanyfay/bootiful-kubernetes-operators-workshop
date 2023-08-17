@@ -76,7 +76,7 @@ clear: true
 ```
 
 ```terminal:execute
-command: kubectl expose deployment my-first-foo --port=80 --target-port=8000
+command: kubectl expose deployment my-first-foo --port=80 --target-port=80
 clear: true
 ```
 
@@ -84,3 +84,5 @@ clear: true
 name: My first Foo
 url: https://my-first-foo-{{ session_namespace }}.{{ ingress_domain }}
 ```
+
+kubectl port-forward service/my-first-foo 80/5000

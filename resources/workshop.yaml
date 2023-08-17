@@ -35,4 +35,7 @@ spec:
           enabled: true
     ingresses:
     - name: my-first-foo
+      authentication:
+        type: none
+      host: my-first-foo.default.svc.cluster.local
       port: 80
