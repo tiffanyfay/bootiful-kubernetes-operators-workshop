@@ -176,17 +176,17 @@ text: |2
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: replace-me
-    namespace: replace-me-namespace
+    name: NAME
+    namespace: NAMESPACE
   spec:
     selector:
       matchLabels:
-        app: replace-me
+        app: NAME
     replicas: 2
     template:
       metadata:
         labels:
-          app: replace-me
+          app: NAME
       spec:
         containers:
           - name: nginx
@@ -199,7 +199,7 @@ text: |2
         volumes:
           - name: nginx-index-file
             configMap:
-              name: replace-me
+              name: NAME
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -209,8 +209,8 @@ text: |2
       private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
           var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
                   "deployment-template.yaml").getURI()));
-          deploymentYaml.replaceAll("replace-me", name);
-          deploymentYaml.replaceAll("replace-me-namespace", resource.getMetadata().getNamespace());
+          deploymentYaml = deploymentYaml.replaceAll("NAMESPACE", resource.getMetadata().getNamespace())
+          		    .replaceAll("NAME", "test-name");
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
       }
 ```

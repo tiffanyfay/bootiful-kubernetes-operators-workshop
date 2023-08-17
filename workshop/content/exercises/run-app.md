@@ -26,10 +26,10 @@ text: |2
       verbs: [get, list, watch]
     - apiGroups: [""]
       resources: [configmaps]
-      verbs: [get, list, create, delete]  
+      verbs: [get, list, create, update, delete]  
     - apiGroups: [apps]
       resources: [deployments]
-      verbs: [get, list, create, delete]  
+      verbs: [get, list, create, update, delete]  
   ---
   apiVersion: rbac.authorization.k8s.io/v1
   kind: ClusterRoleBinding
