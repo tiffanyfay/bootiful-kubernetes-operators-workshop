@@ -11,6 +11,9 @@ spec:
     - git:
         url: https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop
         ref: origin/main
+      includePaths:
+      - /workshop/**
+      - /samples/**
   session:
     namespaces:
       budget: budget

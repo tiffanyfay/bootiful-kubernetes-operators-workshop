@@ -1,6 +1,0 @@
-./resources
-./.gitignore
-./Dockerfile
-./README.md
-./.dockerignore
-./.github
