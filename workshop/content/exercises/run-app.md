@@ -1,12 +1,12 @@
 #### Build container image for the controller and push it to registry
 
 ```terminal:execute
-command: (cd ~/controller/ && ./gradlew bootBuildImage --imageName={{ ENV_REGISTRY_HOST }}/foo-controller)
+command: (cd ~/controller/ && ./gradlew bootBuildImage --imageName={{ registry_host }}/foo-controller)
 clear: true
 ```
 
 ```terminal:execute
-command: imgpkg push -i {{ ENV_REGISTRY_HOST }}/foo-controller
+command: docker push {{ registry_host }}/foo-controller
 clear: true
 ```
 
@@ -60,7 +60,7 @@ text: |2
           app: foo-controller
       spec:
         containers:
-        - image: {{ ENV_REGISTRY_HOST }}/foo-controller
+        - image: {{ registry_host }}/foo-controller
           name: foo-controller
 ```
 ```terminal:execute
@@ -68,3 +68,28 @@ command: |
     kubectl create -f controller-deployment.yaml
 ```
 
+
+#### Discover our first Foo
+```terminal:execute
+command: kubectl get foos,configmap,deployment | grep my-first-foo
+clear: true
+```
+
+```terminal:execute
+command: kubectl get foos,configmap,deployment | grep my-first-foo
+clear: true
+```
+
+```execute-2
+kubectl port-forward my-first-foo-9b46fc456-nkdtm 8080:8080
+```
+
+```terminal:execute
+command: kubectl get foos,configmap,deployment | grep my-first-foo
+clear: true
+```
+
+
+```terminal:interrupt
+session: 2
+```

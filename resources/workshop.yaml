@@ -33,6 +33,12 @@ spec:
         enabled: true
         ingress:
           enabled: true
-    ingresses:
-    - name: controller
-      port: 8080
+    objects:
+    - apiVersion: v1
+      kind: Secret
+      type: kubernetes.io/service-account-token
+      metadata:
+        name: default-sa-token
+        namespace: default
+        annotations:
+          kubernetes.io/service-account.name: "default"

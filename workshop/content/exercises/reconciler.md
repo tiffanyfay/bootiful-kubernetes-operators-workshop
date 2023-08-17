@@ -3,7 +3,7 @@ A Reconciler implements a Kubernetes API for a specific resource by creating, up
 The [Kubernetes Java Client](https://github.com/kubernetes-client/java) provides a **Reconciler interface** to implement custom controllers watching events on resources. 
 ```editor:append-lines-to-file
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-description: First custom resource
+description: Create Reconciler skeleton
 text: |2
   package io.spring.controller;
 

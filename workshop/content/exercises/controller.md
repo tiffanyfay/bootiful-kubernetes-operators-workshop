@@ -120,6 +120,6 @@ clear: true
 ```
 ```
 Parameter 1 of method controller in io.spring.controller.ControllerConfiguration required a bean of type 'io.kubernetes.client.informer.SharedIndexInformer' that could not be found.
-``
+```
 
 Let's configure a bean of type SharedIndexInformer<V1Foo> in the following section.
