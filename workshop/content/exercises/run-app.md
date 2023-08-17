@@ -71,25 +71,16 @@ command: |
 
 #### Discover our first Foo
 ```terminal:execute
-command: kubectl get foos,configmap,deployment | grep my-first-foo
+command: kubectl get foos,configmap,deployment
 clear: true
 ```
 
 ```terminal:execute
-command: kubectl get foos,configmap,deployment | grep my-first-foo
+command: kubectl expose deployment my-first-foo --port=80 --target-port=8000
 clear: true
 ```
 
-```execute-2
-kubectl port-forward my-first-foo-9b46fc456-nkdtm 8080:8080
-```
-
-```terminal:execute
-command: kubectl get foos,configmap,deployment | grep my-first-foo
-clear: true
-```
-
-
-```terminal:interrupt
-session: 2
+```dashboard:create-dashboard
+name: My first Foo
+url: https://my-first-foo-$(session_namespace).$(ingress_domain)
 ```

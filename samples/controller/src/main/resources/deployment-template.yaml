@@ -1,17 +1,17 @@
-piVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: replace-me-name
-  namespace: replace-me-namespace
+  name: NAME
+  namespace: NAMESPACE
 spec:
   selector:
     matchLabels:
-      app: replace-me-name
+      app: NAME
   replicas: 2
   template:
     metadata:
       labels:
-        app: replace-me-name
+        app: NAME
     spec:
       containers:
         - name: nginx
@@ -24,4 +24,4 @@ spec:
       volumes:
         - name: nginx-index-file
           configMap:
-            name: replace-me-name
+            name: NAME

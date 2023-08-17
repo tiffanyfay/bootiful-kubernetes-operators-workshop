@@ -33,3 +33,6 @@ spec:
         enabled: true
         ingress:
           enabled: true
+    ingresses:
+    - name: my-first-foo
+      port: 80

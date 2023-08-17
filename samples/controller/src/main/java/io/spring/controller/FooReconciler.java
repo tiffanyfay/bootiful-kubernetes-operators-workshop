@@ -3,26 +3,23 @@ package io.spring.controller;
 import io.kubernetes.client.extended.controller.reconciler.Reconciler;
 import io.kubernetes.client.extended.controller.reconciler.Request;
 import io.kubernetes.client.extended.controller.reconciler.Result;
-import io.kubernetes.client.informer.SharedIndexInformer;
-import io.kubernetes.client.informer.cache.Lister;
-import io.kubernetes.client.openapi.ApiException;
-import io.kubernetes.client.openapi.apis.AppsV1Api;
-import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.*;
-import io.kubernetes.client.util.Yaml;
-import io.kubernetes.client.util.generic.GenericKubernetesApi;
-import io.spring.controller.models.V1Foo;
-import io.spring.controller.models.V1FooList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.kubernetes.client.informer.cache.Lister;
+import io.kubernetes.client.informer.SharedIndexInformer;
+import io.spring.controller.models.V1Foo;
+import io.kubernetes.client.openapi.models.*;
+import java.util.Map;
+import java.util.Collections;
+import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import java.time.Duration;
+import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.util.Yaml;
 import org.springframework.core.io.ClassPathResource;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
 
 public class FooReconciler implements Reconciler {
 
@@ -32,9 +29,11 @@ public class FooReconciler implements Reconciler {
     private final CoreV1Api coreV1Api;
     private final AppsV1Api appsV1Api;
     public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api, AppsV1Api appsV1Api) {
-        this.informer = informer;
-        this.coreV1Api = coreV1Api;
         this.appsV1Api = appsV1Api;
+
+        this.coreV1Api = coreV1Api;
+
+        this.informer = informer;
     }
 
     @Override
@@ -63,26 +62,25 @@ public class FooReconciler implements Reconciler {
             log.error("Applying Deployment for Foo " + namespace + "/" + name + " failed", e);
             return new Result(true, Duration.ofSeconds(10));
         }
+
         return new Result(false);
     }
 
-    private void applyDeployment(V1Deployment deployment) throws ApiException {
-        var name = deployment.getMetadata().getName();
-        var namespace = deployment.getMetadata().getNamespace();
-        var deploymentList = appsV1Api.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
-        boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
-        if (deploymentExist) {
-          appsV1Api.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
-        } else {
-          appsV1Api.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
-        }
+    private V1ConfigMap getConfigMap(String name, V1Foo resource, Map<String, String> configMapContent) {
+        return new V1ConfigMapBuilder()
+              .withApiVersion("v1")
+              .withNewMetadata()
+                  .withName(name)
+                  .withNamespace(resource.getMetadata().getNamespace())
+                  .withOwnerReferences(Collections.singletonList(getOwnerReference(resource)))
+              .endMetadata()
+              .withData(configMapContent)
+              .build();
     }
 
-    private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
-        var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
-                "deployment-template.yaml").getURI()));
-        deploymentYaml.replaceAll("replace-me", name);
-        return Yaml.loadAs(deploymentYaml, V1Deployment.class);
+    private V1OwnerReference getOwnerReference(V1Foo owner) {
+        return new V1OwnerReferenceBuilder().withApiVersion(owner.getApiVersion()).withKind(owner.getKind())
+              .withName(owner.getMetadata().getName()).withUid(owner.getMetadata().getUid()).withController().build();
     }
 
     private void applyConfigMap(V1ConfigMap configMap) throws ApiException {
@@ -91,26 +89,29 @@ public class FooReconciler implements Reconciler {
         var configMapList = coreV1Api.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
         boolean configMapExist = configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
         if (configMapExist) {
-          coreV1Api.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
+            coreV1Api.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
         } else {
-          coreV1Api.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
+            coreV1Api.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
         }
     }
 
-    private V1ConfigMap getConfigMap(String name, V1Foo resource, Map<String, String> configMapContent) {
-        return new V1ConfigMapBuilder()
-                .withApiVersion("v1")
-                .withNewMetadata()
-                    .withName(name)
-                    .withNamespace(resource.getMetadata().getNamespace())
-                    .withOwnerReferences(Collections.singletonList(getOwnerReference(resource)))
-                .endMetadata()
-                .withData(configMapContent)
-                .build();
+    private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
+        var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
+                "deployment-template.yaml").getURI()));
+        deploymentYaml = deploymentYaml.replaceAll("NAMESPACE", resource.getMetadata().getNamespace())
+                    .replaceAll("NAME", name);
+        return Yaml.loadAs(deploymentYaml, V1Deployment.class);
     }
 
-    private V1OwnerReference getOwnerReference(V1Foo owner) {
-        return new V1OwnerReferenceBuilder().withApiVersion(owner.getApiVersion()).withKind(owner.getKind())
-                .withName(owner.getMetadata().getName()).withUid(owner.getMetadata().getUid()).withController().build();
+    private void applyDeployment(V1Deployment deployment) throws ApiException {
+        var name = deployment.getMetadata().getName();
+        var namespace = deployment.getMetadata().getNamespace();
+        var deploymentList = appsV1Api.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
+        boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
+        if (deploymentExist) {
+            appsV1Api.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
+        } else {
+            appsV1Api.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
+        }
     }
 }

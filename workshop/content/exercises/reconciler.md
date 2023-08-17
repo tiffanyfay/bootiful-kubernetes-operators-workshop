@@ -210,7 +210,7 @@ text: |2
           var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
                   "deployment-template.yaml").getURI()));
           deploymentYaml = deploymentYaml.replaceAll("NAMESPACE", resource.getMetadata().getNamespace())
-          		    .replaceAll("NAME", "test-name");
+          		    .replaceAll("NAME", name);
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
       }
 ```

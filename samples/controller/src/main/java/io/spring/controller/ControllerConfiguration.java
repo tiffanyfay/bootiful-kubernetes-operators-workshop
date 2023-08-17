@@ -5,32 +5,32 @@ import io.kubernetes.client.extended.controller.builder.ControllerBuilder;
 import io.kubernetes.client.extended.controller.reconciler.Reconciler;
 import io.kubernetes.client.informer.SharedIndexInformer;
 import io.kubernetes.client.informer.SharedInformerFactory;
-import io.kubernetes.client.openapi.ApiClient;
-import io.kubernetes.client.util.generic.GenericKubernetesApi;
 import io.spring.controller.models.V1Foo;
 import io.spring.controller.models.V1FooList;
-import org.springframework.boot.CommandLineRunner;
+import io.kubernetes.client.util.generic.GenericKubernetesApi;
+import io.kubernetes.client.openapi.ApiClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.CommandLineRunner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Configuration
 public class ControllerConfiguration {
 
     @Bean
     GenericKubernetesApi<V1Foo, V1FooList> foosApi(ApiClient apiClient) {
-        return new GenericKubernetesApi<>(V1Foo.class, V1FooList.class, "spring.io", "v1", "foos", apiClient);
+      return new GenericKubernetesApi<>(V1Foo.class, V1FooList.class, "spring.io", "v1", "foos", apiClient);
     }
 
     @Bean
     SharedIndexInformer<V1Foo> foosSharedIndexInformer(SharedInformerFactory sharedInformerFactory,
-                                                       GenericKubernetesApi<V1Foo, V1FooList> api) {
-        return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
+        GenericKubernetesApi<V1Foo, V1FooList> api) {
+      return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
     }
 
     @Bean
@@ -45,10 +45,9 @@ public class ControllerConfiguration {
 
     @Bean
     Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer,
-                          GenericKubernetesApi<V1Foo, V1FooList> fooV1Api,
                           CoreV1Api coreV1Api,
                           AppsV1Api appsV1Api) {
-        return new FooReconciler(parentInformer, fooV1Api, coreV1Api, appsV1Api);
+        return new FooReconciler(parentInformer, coreV1Api, appsV1Api);
     }
 
     @Bean
