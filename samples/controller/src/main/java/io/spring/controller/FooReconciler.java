@@ -85,7 +85,7 @@ public class FooReconciler implements Reconciler {
         return Yaml.loadAs(deploymentYaml, V1Deployment.class);
     }
 
-    private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
+    private void applyConfigMap(V1ConfigMap configMap) throws ApiException {
         var name = configMap.getMetadata().getName();
         var namespace = configMap.getMetadata().getNamespace();
         var configMapList = coreV1Api.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);

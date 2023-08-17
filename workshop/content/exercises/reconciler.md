@@ -133,7 +133,7 @@ file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 65
 text: |2
 
-      private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
+      private void applyConfigMap(V1ConfigMap configMap) throws ApiException {
           var name = configMap.getMetadata().getName();
           var namespace = configMap.getMetadata().getNamespace();
           var configMapList = coreV1Api.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
@@ -177,6 +177,7 @@ text: |2
   kind: Deployment
   metadata:
     name: replace-me
+    namespace: replace-me-namespace
   spec:
     selector:
       matchLabels:
@@ -209,6 +210,7 @@ text: |2
           var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
                   "deployment-template.yaml").getURI()));
           deploymentYaml.replaceAll("replace-me", name);
+          deploymentYaml.replaceAll("replace-me-namespace", resource.getMetadata().getNamespace());
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
       }
 ```
@@ -225,7 +227,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 98
+line: 99
 text: |2
 
       private void applyDeployment(V1Deployment deployment) throws ApiException {
