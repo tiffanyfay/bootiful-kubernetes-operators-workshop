@@ -130,7 +130,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 62
+line: 65
 text: |2
 
       private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
@@ -157,7 +157,7 @@ text: |2
 Create and apply Deployment.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 45
+line: 48
 text: |2
 
           try {
@@ -202,7 +202,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 86
+line: 89
 text: |2
 
       private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
@@ -225,7 +225,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 93
+line: 99
 text: |2
 
       private void applyDeployment(V1Deployment deployment) throws ApiException {
