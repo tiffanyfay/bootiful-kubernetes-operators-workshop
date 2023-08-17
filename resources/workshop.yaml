@@ -38,4 +38,5 @@ spec:
       authentication:
         type: none
       host: my-first-foo.default.svc.cluster.local
+      protocol: http
       port: 80

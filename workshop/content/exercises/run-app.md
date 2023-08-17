@@ -85,4 +85,5 @@ name: My first Foo
 url: https://my-first-foo-{{ session_namespace }}.{{ ingress_domain }}
 ```
 
-kubectl port-forward service/my-first-foo 80/5000
+kubectl port-forward service/my-first-foo 5000:80
+curl localhost:5000
