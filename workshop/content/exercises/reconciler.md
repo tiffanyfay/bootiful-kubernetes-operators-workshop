@@ -117,21 +117,31 @@ text: |2
           }
 
 ```
+```editor:select-matching-text
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+text: "public FooReconciler(SharedIndexInformer<V1Foo> informer) {"
+```
+```editor:replace-text-selection
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+text: |2
+  private final CoreV1Api coreV1Api;
+      public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api) {
+          this.coreV1Api = coreV1Api;
+```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 62
 text: |2
 
       private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
-          var configMapApi = new CoreV1Api();
           var name = configMap.getMetadata().getName();
           var namespace = configMap.getMetadata().getNamespace();
-          var configMapList = configMapApi.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
+          var configMapList = coreV1Api.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
           boolean configMapExist = configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
           if (configMapExist) {
-              configMapApi.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
+              coreV1Api.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
           } else {
-              configMapApi.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
+              coreV1Api.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
           }
       }
 ```
@@ -202,21 +212,31 @@ text: |2
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
       }
 ```
+```editor:select-matching-text
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+text: "public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api) {"
+```
+```editor:replace-text-selection
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+text: |2
+  private final AppsV1Api appsV1Api;
+      public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api, AppsV1Api appsV1Api) {
+          this.appsV1Api = appsV1Api;
+```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 93
 text: |2
 
       private void applyDeployment(V1Deployment deployment) throws ApiException {
-          var deploymentApi = new AppsV1Api();
           var name = deployment.getMetadata().getName();
           var namespace = deployment.getMetadata().getNamespace();
-          var deploymentList = deploymentApi.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
+          var deploymentList = appsV1Api.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
           boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
           if (deploymentExist) {
-              deploymentApi.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
+              appsV1Api.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
           } else {
-              deploymentApi.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
+              appsV1Api.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
           }
       }
 ```
@@ -239,7 +259,26 @@ line: 33
 text: |2
 
       @Bean
-      Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer) {
-          return new FooReconciler(parentInformer);
+      AppsV1Api appsV1Api(ApiClient apiClient) {
+          return new AppsV1Api(apiClient);
       }
+
+      @Bean
+      CoreV1Api coreV1Api(ApiClient apiClient) {
+          return new CoreV1Api(apiClient);
+      }
+
+      @Bean
+      Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer,
+                            CoreV1Api coreV1Api,
+                            AppsV1Api appsV1Api) {
+          return new FooReconciler(parentInformer, coreV1Api, appsV1Api);
+      }
+```
+```editor:insert-lines-before-line
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
+line: 17
+text: |2
+  import io.kubernetes.client.openapi.apis.AppsV1Api;
+  import io.kubernetes.client.openapi.apis.CoreV1Api;
 ```

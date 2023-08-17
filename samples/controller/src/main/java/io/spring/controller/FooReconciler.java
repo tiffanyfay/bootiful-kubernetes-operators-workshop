@@ -29,10 +29,12 @@ public class FooReconciler implements Reconciler {
     private static final Logger log = LoggerFactory.getLogger(FooReconciler.class);
 
     private final SharedIndexInformer<V1Foo> informer;
-    private final  GenericKubernetesApi<V1Foo, V1FooList> api;
-    public FooReconciler(SharedIndexInformer<V1Foo> informer, GenericKubernetesApi<V1Foo, V1FooList> api) {
+    private final CoreV1Api coreV1Api;
+    private final AppsV1Api appsV1Api;
+    public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api, AppsV1Api appsV1Api) {
         this.informer = informer;
-        this.api = api;
+        this.coreV1Api = coreV1Api;
+        this.appsV1Api = appsV1Api;
     }
 
     @Override
@@ -65,15 +67,14 @@ public class FooReconciler implements Reconciler {
     }
 
     private void applyDeployment(V1Deployment deployment) throws ApiException {
-        var deploymentApi = new AppsV1Api();
         var name = deployment.getMetadata().getName();
         var namespace = deployment.getMetadata().getNamespace();
-        var deploymentList = deploymentApi.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
+        var deploymentList = appsV1Api.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
         boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
         if (deploymentExist) {
-            deploymentApi.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
+          appsV1Api.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
         } else {
-            deploymentApi.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
+          appsV1Api.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
         }
     }
 
@@ -85,15 +86,14 @@ public class FooReconciler implements Reconciler {
     }
 
     private static void applyConfigMap(V1ConfigMap configMap) throws ApiException {
-        var configMapApi = new CoreV1Api();
         var name = configMap.getMetadata().getName();
         var namespace = configMap.getMetadata().getNamespace();
-        var configMapList = configMapApi.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
+        var configMapList = coreV1Api.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
         boolean configMapExist = configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
         if (configMapExist) {
-            configMapApi.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
+          coreV1Api.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
         } else {
-            configMapApi.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
+          coreV1Api.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
         }
     }
 

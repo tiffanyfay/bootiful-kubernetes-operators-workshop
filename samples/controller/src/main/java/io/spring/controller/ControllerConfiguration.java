@@ -12,6 +12,8 @@ import io.spring.controller.models.V1FooList;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
@@ -32,9 +34,21 @@ public class ControllerConfiguration {
     }
 
     @Bean
+    AppsV1Api appsV1Api(ApiClient apiClient) {
+        return new AppsV1Api(apiClient);
+    }
+
+    @Bean
+    CoreV1Api coreV1Api(ApiClient apiClient) {
+        return new CoreV1Api(apiClient);
+    }
+
+    @Bean
     Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer,
-                          GenericKubernetesApi<V1Foo, V1FooList> api) {
-        return new FooReconciler(parentInformer, api);
+                          GenericKubernetesApi<V1Foo, V1FooList> fooV1Api,
+                          CoreV1Api coreV1Api,
+                          AppsV1Api appsV1Api) {
+        return new FooReconciler(parentInformer, fooV1Api, coreV1Api, appsV1Api);
     }
 
     @Bean
