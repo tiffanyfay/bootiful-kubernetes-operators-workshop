@@ -173,7 +173,7 @@ text: |2
 file: ~/controller/src/main/resources/deployment-template.yaml
 description: Add deployment YAML template to resources
 text: |2
-  piVersion: apps/v1
+  apiVersion: apps/v1
   kind: Deployment
   metadata:
     name: replace-me
@@ -202,7 +202,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 89
+line: 88
 text: |2
 
       private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
@@ -225,7 +225,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 99
+line: 98
 text: |2
 
       private void applyDeployment(V1Deployment deployment) throws ApiException {
