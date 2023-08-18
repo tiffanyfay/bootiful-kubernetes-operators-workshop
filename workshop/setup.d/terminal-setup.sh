@@ -8,9 +8,9 @@ kubectl patch serviceaccount default -p '{"secrets": [{"name": "default-sa-token
 mv samples/foo-crd.yaml .
 
 # JVM image
-# docker pull docker.io/paketobuildpacks/builder:base
-# docker pull docker.io/paketobuildpacks/run:base-cnb
+docker pull docker.io/paketobuildpacks/builder:base
+docker pull docker.io/paketobuildpacks/run:base-cnb
 
 ## Native image
-# docker pull docker.io/paketobuildpacks/builder:tiny
-# docker pull docker.io/paketobuildpacks/run:tiny-cnb
+docker pull docker.io/paketobuildpacks/builder:tiny
+docker pull docker.io/paketobuildpacks/run:tiny-cnb
