@@ -4,9 +4,6 @@ USER root
 
 RUN yum install moreutils wget -y
 
-RUN wget -O /etc/pki/ca-trust/source/anchors/isrgrootx1.pem https://letsencrypt.org/certs/isrgrootx1.pem && wget -O /etc/pki/ca-trust/source/anchors/lets-encrypt-r3.pem https://letsencrypt.org/certs/lets-encrypt-r3.pem
-RUN update-ca-trust
-
 USER 1001
 
 RUN fix-permissions /home/eduk8s

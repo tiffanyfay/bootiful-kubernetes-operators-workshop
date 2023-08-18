@@ -16,7 +16,7 @@ spec:
       - /samples/**
   session:
     namespaces:
-      budget: budget
+      budget: custom
       security:
         policy: baseline
     applications:
