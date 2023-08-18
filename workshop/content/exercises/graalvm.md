@@ -1,3 +1,22 @@
+The Spring Boot Gradle plugin automatically configures AOT tasks when the GraalVM Native Image plugin is applied. You should check that your Gradle build contains a plugins block that includes org.graalvm.buildtools.native.
+
+Let's add the `org.graalvm.buildtools.native` plugin, so the `bootBuildImage task will generate a native image rather than a JVM one.
+```editor:insert-lines-before-line
+file: controller/build.gradle
+line: 5
+text: |1
+    id 'org.graalvm.buildtools.native' version '0.9.23'
+```
+
+```terminal:execute
+command: (cd ~/controller/ && ./gradlew bootBuildImage --imageName={{ registry_host }}/foo-controller)
+clear: true
+```
+
+
+
+**TMP**
+
 > TODO text here and check where this file saves
 
 ```terminal:execute

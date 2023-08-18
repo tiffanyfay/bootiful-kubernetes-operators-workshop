@@ -1,0 +1,46 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: foo-controller-cr
+rules:
+  - apiGroups: [spring.io]
+    resources: [foos]
+    verbs: [get, list, watch]
+  - apiGroups: [""]
+    resources: [configmaps]
+    verbs: [get, list, create, update]  
+  - apiGroups: [apps]
+    resources: [deployments]
+    verbs: [get, list, create, update]  
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: foo-controller-crb
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: foo-controller-cr
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-controller
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo-controller
+  template:
+    metadata:
+      labels:
+        app: foo-controller
+    spec:
+      containers:
+      - image: harbor.emea.end2end.link/tap-workshop/foo-controller
+        name: foo-controller

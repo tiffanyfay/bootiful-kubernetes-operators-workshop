@@ -22,9 +22,9 @@ modules:
         exit_sign: Run App
     exercises/run-app:
         name: Run App
-        exit_sign: GraalVM
+        exit_sign: Robustness
     exercises/graalvm:
-        name: GraalVM
+        name: Maximize Robustness of the Controller
         exit_sign: Summary
     workshop-summary:
         name: Workshop Summary
