@@ -16,7 +16,7 @@ spec:
       - /samples/**
   session:
     resources:
-      memory: 10Gi
+      memory: 50Gi
     namespaces:
       budget: custom
       security:

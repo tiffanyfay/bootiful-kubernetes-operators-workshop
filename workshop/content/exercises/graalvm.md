@@ -5,7 +5,7 @@ Let's add the `org.graalvm.buildtools.native` plugin, so the `bootBuildImage tas
 file: controller/build.gradle
 line: 5
 text: |1
-    id 'org.graalvm.buildtools.native' version '0.9.23'
+     id 'org.graalvm.buildtools.native' version '0.9.23'
 ```
 
 ```terminal:execute
