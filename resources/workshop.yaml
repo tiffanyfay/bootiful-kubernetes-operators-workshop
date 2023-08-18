@@ -36,10 +36,16 @@ spec:
         enabled: true
         ingress:
           enabled: true
+        objects:
+        - apiVersion: v1
+          kind: Secret
+          type: kubernetes.io/service-account-token
+          metadata:
+            name: default-sa-token
+            namespace: default
+            annotations:
+              kubernetes.io/service-account.name: "default"
     ingresses:
     - name: my-first-foo
-      authentication:
-        type: none
-      host: my-first-foo.default.svc.cluster.local
-      protocol: http
+      host: my-first-foo-x-default-x-my-vcluster.$(session_namespace)
       port: 80
