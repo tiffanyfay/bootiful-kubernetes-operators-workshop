@@ -31,8 +31,7 @@ If there isn't an operator available that implements the behavior you want, you 
 
 Operators (specifically, the controller part of the operator) can be written using any language / runtime that can act as a client for the Kubernetes API.
 
-The Kubernetes controller that we'll show in this workshop is built with Spring Boot, but we could have implemented it with other programming languages or frameworks, as long as they have a Kubernetes client library.
-
-**In this workshop, we will build the controller with Spring Boot, and use the official Java Kubernetes client library.**
-
 [Several Operator frameworks](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#writing-operator), such as the Operator SDK and Kubebuilder, have been developed to streamline the creation of Operators. These frameworks provide templates, libraries, and tools to simplify the development process and promote best practices.
+
+**In this workshop, we will build a custom controller with Spring Boot, and use the official Java Kubernetes client library.**
+

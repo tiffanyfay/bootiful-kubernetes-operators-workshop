@@ -1,11 +1,10 @@
-What's an **Informer**, you ask? An informer "is a" - and we're not making this up - controller together with the ability to distribute its `Queue`-related operations to an appropriate event handler. Instead of needing to continually query the Kubernetes API an informer stores data in a cache.
+A `SharedIndexInformer`, which you are already aware of, is a special form of an **Informer**, which is a cache for a resource, so the controller does not need to continuously poll the Kubernetes cluster (API server) to check if there are any CRD updates.
 
 There are `SharedInformer`s that share data across multiple instances of the `Informer` so that they're not duplicated. A `SharedInformer` has a shared data cache and is capable of distributing notifications for changes to the cache to multiple listeners who registered with it. There is one behavior change compared to a standard `Informer`: when you receive a notification, the cache will be _at least_ as fresh as the notification, but it _may_ be more fresh. You should not depend on the contents of the cache exactly matching the state implied by the notification. The notification is binding.
 
-`SharedIndexInformer` only adds one more thing to the picture: the ability to lookup items by various keys. So, a controller sometimes needs a conceptually-a-controller to be a controller. Got it? Got it.
+`SharedIndexInformer` only adds one more thing to the picture: the ability to lookup items by various keys. 
 
-First, we need to create a `GenericKubernetesApi` for our generated Foo classes.
-
+To condigure a bean of type SharedIndexInformer<V1Foo>, we first need to create a `GenericKubernetesApi` for our generated Foo classes.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 19
@@ -17,7 +16,7 @@ text: |2
       }
 ```
 
-Now, let's add the `SharedIndexInformer` and the missing imports.
+Now, we'll leverage the `SharedInformerFactory` class, you are also already aware of, to construct and register the `SharedIndexInformer` for our Foo custom resource.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 24
@@ -29,7 +28,7 @@ text: |2
         return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
       }
 ```
-
+We also have to add the missing imports.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 9

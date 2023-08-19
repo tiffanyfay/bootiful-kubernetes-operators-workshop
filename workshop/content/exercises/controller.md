@@ -44,6 +44,9 @@ Now we have the Java class representations of the CRD and can start with the imp
 
 #### Implementing the Controller
 
+The Kubernetes Java Client provides everything we need to implement the controller. 
+
+The `ControllerBuilder` builder library helps us to configure the basic controller functionality, and provide an instance of it.
 ```editor:append-lines-to-file
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 description: Create initial controller configuration
@@ -68,22 +71,33 @@ text: |2
       Controller controller(SharedInformerFactory sharedInformerFactory,
                             SharedIndexInformer<V1Foo> informer,
                             Reconciler reconciler) {
-          var builder = ControllerBuilder
+          return ControllerBuilder
                   .defaultBuilder(sharedInformerFactory)
                   .watch(q -> ControllerBuilder
                           .controllerWatchBuilder(V1Foo.class, q)
                           .withResyncPeriod(Duration.ofSeconds(30))
                           .build())
-                  .withWorkerCount(2);
-          return builder
                   .withReconciler(reconciler)
                   .withReadyFunc(informer::hasSynced)
-                  .withName("fooController")
+                  .withWorkerCount(2)
                   .build();
       }
   }
 ```
+For the configuration of our controller instance, we are injecting three dependencies:
+- A `SharedIndexInformer` is a cache for a resource, so the controller does not need to continuously poll the Kubernetes cluster (API server) to check if there are any new CRD instances created, updated, or deleted
+- The `SharedInformerFactory` class is used to construct and register all defined informers for different api types in a controller
+- The `Reconciler`` implements the functionality of related resources and will be invoked when they are created, update, deleted, etc.
 
+The static `ControllerBuilder.defaultBuilder` method creates a builder instance with several default values, which can be overridden. It accepts the provided **SharedInformerFactory instance as a parameter to validate that an informer for the resource to be watched is registered - in our case the V1Foo class**.
+
+**To conigure the resources to be watched**, and the interval **we are using the static `ControllerBuilder.controllerWatchBuilder` method**.
+
+The provided `Reconciler` is set via the `withReconciler` method, and the **`withReadyFunc` defines a pre-flight check** that has to be fullfiled before the controller can run. In this case, whether the shared informer's store has synced.
+
+For this demo, we reduce the worker thread count to two from the current default of 16.
+
+After doing all the initialization, we've to start our registered informer and the controller. 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 34
