@@ -1,4 +1,4 @@
-A Reconciler implements a Kubernetes API for a specific resource by creating, updating or deleting Kubernetes objects, or by making changes to systems external to the cluster (e.g. cloudproviders, github, etc).
+A Reconciler implements a Kubernetes API for a specific resource by creating, updating, or deleting Kubernetes objects or by making changes to systems external to the cluster (e.g. cloud providers, github, etc).
 
 The [Kubernetes Java Client](https://github.com/kubernetes-client/java) provides a **Reconciler interface** to implement custom controllers watching events on resources. 
 ```editor:append-lines-to-file
@@ -26,13 +26,13 @@ text: |2
 ```
 The `reconcile` method has one parameter with of type `Request`, which contains the information necessary to reconcile a resource object. This includes the information to uniquely identify the object - its name and namespace. It does not contain information about any specific event or the object's contents itself.
 
-The method returns a `Result` object with the information of whether a request was handled successfully, and based on that whether it should be requeued. It's also possible to configure when it should be requeued with a duration parameter.
+The method returns a `Result` object with the information of whether a request was handled successfully and, based on that, whether it should be requeued. It's also possible to configure when it should be requeued with a duration parameter.
 
 Let's start with the implementation of the actual functionality of our custom resource.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 15
-description: Get related resource from cache
+description: Get the related resource from cache
 text: |2
           var namespace = request.getNamespace();
           var name  = request.getName();
@@ -70,7 +70,7 @@ text: |2
 
 The Kubernetes Java Client provides related classes for all the out-of-the-box Kubernetes resources like deployments (V1Deployment), services (V1Service) etc.
 
-Now we'll construct a `V1ConfigMap` object containing all the required information for Kubernetes to create a `ConfigMap` resource including the individual greeting as HTML for a Foo.
+Now we'll construct a `V1ConfigMap` object containing all the required information for Kubernetes to create a `ConfigMap` resource, including the individual greeting as HTML for a Foo.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -111,7 +111,7 @@ text: |2
                 .withName(owner.getMetadata().getName()).withUid(owner.getMetadata().getUid()).withController().build();
       }
 ```
-As you can see, we are adding an **owner reference to the ConfigMap**. This links it to the Foo resource and it will be automatically deleted if the related Foo resource gets deleted, so we don't have to care about it.
+As you can see, we are adding an **owner reference to the ConfigMap**. This links it to the Foo resource, and it will be automatically deleted if the related Foo resource gets deleted, so we don't have to care about it.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -140,7 +140,7 @@ text: |2
 In the case of an API error, we are requeuing the request after ten seconds.
 ```editor:select-matching-text
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-description: Select constructor to add dependency injection of CoreV1Api instance
+description: Select the constructor to add dependency injection of CoreV1Api instance
 text: "public FooReconciler(SharedIndexInformer<V1Foo> informer) {"
 ```
 ```editor:replace-text-selection
@@ -173,7 +173,7 @@ text: |2
           return configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(configMap.getMetadata().getName()));
       }
 ```
-As `CoreV1Api` class doesn't provide an apply functionality, we have to implement it ourselves. 
+As `CoreV1Api` class doesn't provide an "apply" functionality, we have to implement it ourselves. 
 To get a list of all ConfigMaps in the namespace, we are using the `coreV1Api.listNamespacedConfigMap` method. With the resulting list, it will be then checked whether a ConfigMap with the name already exists in the namespace.
 If that's the case, the `coreV1Api.replaceNamespacedConfigMap` will update the ConfigMap resource with the updated configuration.
 Otherwise, the `coreV1Api.createNamespacedConfigMap` method will be used to create the configured ConfigMap in the cluster.
@@ -255,7 +255,7 @@ text: |2
 The static `Yaml.loadAs` method of the Kubernetes Java Client provides the functionality to map a YAML string into the related resource instance class.
 ```editor:select-matching-text
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-description: Select constructor to add dependency injection of AppsV1Api instance
+description: Select the constructor to add dependency injection of AppsV1Api instance
 text: "public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api) {"
 ```
 ```editor:replace-text-selection
@@ -286,7 +286,7 @@ text: |2
           return deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(deployment.getMetadata().getName()));
       }
 ```
-As the implementation of the `applyDeployment` is similar to the `applyConfigMap` method, we could remove some lines of duplicate code by using a `GenericKubernetesApi` instead of the strongly typed ones but we would lose the higher abstraction.
+As the implementation of the `applyDeployment` is similar to the `applyConfigMap` method, we could remove some lines of duplicate code by using a `GenericKubernetesApi` instead of the strongly typed ones, but we would lose the higher abstraction.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 17
@@ -332,3 +332,5 @@ text: |2
   import io.kubernetes.client.openapi.apis.AppsV1Api;
   import io.kubernetes.client.openapi.apis.CoreV1Api;
 ```
+
+After adding all the code, it's not time to run our custom Kubernetes controller.
