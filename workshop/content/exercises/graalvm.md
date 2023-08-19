@@ -166,7 +166,7 @@ If you have **classes that need binding** (mostly needed when serializing or des
 
 After everything is prepared, let's update our deployment with the container image that is already built for you and find out how the startup time and resource consumption changed.
 ```terminal:execute
-command: kubectl patch deployment foo-controller -p '{"spec":{"template":{"spec":{"containers":{"image": "{{ registry_host }}/foo-controller-native"}}}}}' --type='merge'
+command: kubectl set image deployment/foo-controller foo-controller={{ registry_host }}/foo-controller-native
 clear: true
 ```
 
