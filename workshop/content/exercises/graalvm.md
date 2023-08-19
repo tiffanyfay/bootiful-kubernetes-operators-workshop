@@ -11,7 +11,7 @@ You will see something similar to this.
 ```
 $ kubectl logs -l app=foo-controller -c foo-controller | grep "Started"
 2023-08-14T19:08:47.891Z  INFO 1 --- [           main] io.spring.controller.ControllerApplication   : Started Application in 3.357 seconds (process running for 3.771)
-````
+```
 {% endraw %}
 
 We can also have a closer look at the CPU and memory consumption.
