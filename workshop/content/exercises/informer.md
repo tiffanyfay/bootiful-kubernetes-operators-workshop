@@ -19,7 +19,7 @@ text: |2
 Now, we'll leverage the `SharedInformerFactory` class, which you are also already aware of, to construct and register the `SharedIndexInformer` for our Foo custom resource.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 24
+line: 23
 text: |2
 
       @Bean
