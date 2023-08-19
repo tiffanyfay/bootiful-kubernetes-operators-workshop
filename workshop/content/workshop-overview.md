@@ -6,6 +6,6 @@ Kubernetes also provides many extension points to implement new features and beh
 
 One of these extension points is the powerful **operator pattern**, which lets you **extend the cluster's behavior** without modifying the code of Kubernetes itself.
 
-In a nutshell, operators are **clients of the Kubernetes API that act as controllers for a Custom Resource.** We're going to see what that means, and what implementing such an operator entails.
+In a nutshell, operators are **clients of the Kubernetes API that act as controllers for a Custom Resource.** We're going to see what that means and what implementing such an operator entails.
 
-**In this interactive workshop, we will learn how to build extensions for Kubernetes with operators, using our beloved application framework Spring Boot.**
+**In this interactive workshop, we will learn how to build extensions for Kubernetes with operators using our beloved application framework Spring Boot.**

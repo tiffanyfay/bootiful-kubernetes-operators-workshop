@@ -1,15 +1,15 @@
-**To run the Controller in a Kubernetes cluster, we first have to build a container**. 
+**To run the controller in a Kubernetes cluster, we first have to build a container**. 
 Spring Boot version 2.3.0 introduced **Cloud Native Buildpack** support to simplify container image creation.
 
 Buildpacks were first conceived by Heroku in 2011. Since then, they have been adopted by Cloud Foundry and other PaaS.
 And the new generation of buildpacks, the [Cloud Native Buildpacks](https://buildpacks.io), is an incubating project in the CNCF which was initiated by Pivotal and Heroku in 2018.
 
 Cloud Native Buildpacks (CNBs) **detect what is needed to compile and run an application** based on the application's source code.
-The application is then **compiled by the appropriate buildpack and a container image with best practices in mind is built** with the runtime environment.
+The application is then **compiled by the appropriate buildpack, and a container image with best practices in mind is built** with the runtime environment.
 
 The biggest benefits of CNBs are **increased security, minimized risk, and increased developer productivity** because they don't need to care much about the details of how to build a container.
 
-With Spring Boot 2.3 and later you can create a container image using the open-source [Paketo buildpacks](https://paketo.io) with the following commands for Maven and Gradle.
+With Spring Boot 2.3 and later, you can create a container image using the open-source [Paketo buildpacks](https://paketo.io) with the following commands for Maven and Gradle.
 ```
 ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=myorg/myapp
 ./gradlew bootBuildImage --imageName=myorg/myapp

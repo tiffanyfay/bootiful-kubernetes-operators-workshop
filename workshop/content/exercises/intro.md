@@ -1,6 +1,6 @@
 In robotics and automation, a control loop is a non-terminating loop (i.e., a loop that runs forever) that regulates the state of a system and tries to match the **current state** of the system with a **desired state**.
 
-For example, when we set the temperature of a thermostat, that's the desired state. The actual room temperature is the current state. The thermostat acts to bring the current state closer to the desired state, by turning equipment (heaters, AC, heat pumps...) on or off.
+For example, when we set the temperature of a thermostat, that's the desired state. The actual room temperature is the current state. The thermostat acts to bring the current state closer to the desired state by turning equipment (heaters, AC, heat pumps...) on or off.
 
 In Kubernetes, controllers are control loops that watch the state of your cluster, then make or request changes where needed. For example, when scaling a deployment, we set the desired state (the number of replicas), and a controller will create or delete pods accordingly so that the current state (the number of running pods) matches the desired state.
 
@@ -10,7 +10,7 @@ A controller tracks at least one Kubernetes resource type.
 
 By convention, most resources have a "spec" field that represents the desired state. The controller(s) for that resource are responsible for making the current state come closer to that desired state.
 
-In the control plane of a freshly installed Kubernetes cluster, there is a component called the **controller manager**, which runs a few dozens of controllers managing the default Kubernetes resources (there are more than 50 of them as of Kubernetes 1.27). But it is also possible to implement and run our own custom controllers to extend these resources, or implement entirely new resources.
+In the control plane of a freshly installed Kubernetes cluster, there is a component called the **controller manager**, which runs a few dozen of controllers managing the default Kubernetes resources (there are more than 50 of them as of Kubernetes 1.27). But it is also possible to implement and run our own custom controllers to extend these resources or implement entirely new resources.
 
 #### Emergent scenarios
 
@@ -29,7 +29,7 @@ Just like creating a Deployment would eventually create one or multiple Pods for
 
 If there isn't an operator available that implements the behavior you want, you can write one yourself.
 
-Operators (specifically, the controller part of the operator) can be written using any language / runtime that can act as a client for the Kubernetes API.
+Operators (specifically, the controller part of the operator) can be written using any language/runtime that can act as a client for the Kubernetes API.
 
 [Several Operator frameworks](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#writing-operator), such as the Operator SDK and Kubebuilder, have been developed to streamline the creation of Operators. These frameworks provide templates, libraries, and tools to simplify the development process and promote best practices.
 

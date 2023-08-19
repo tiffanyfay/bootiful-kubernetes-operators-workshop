@@ -2,9 +2,9 @@ A `SharedIndexInformer`, which you are already aware of, is a special form of an
 
 There are `SharedInformer`s that share data across multiple instances of the `Informer` so that they're not duplicated. A `SharedInformer` has a shared data cache and is capable of distributing notifications for changes to the cache to multiple listeners who registered with it. There is one behavior change compared to a standard `Informer`: when you receive a notification, the cache will be _at least_ as fresh as the notification, but it _may_ be more fresh. You should not depend on the contents of the cache exactly matching the state implied by the notification. The notification is binding.
 
-`SharedIndexInformer` only adds one more thing to the picture: the ability to lookup items by various keys. 
+`SharedIndexInformer` only adds one more thing to the picture: the ability to look up items by various keys. 
 
-To condigure a bean of type SharedIndexInformer<V1Foo>, we first need to create a `GenericKubernetesApi` for our generated Foo classes.
+To configure a bean of type SharedIndexInformer<V1Foo>, we first need to create a `GenericKubernetesApi` for our generated Foo classes.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 19
@@ -16,7 +16,7 @@ text: |2
       }
 ```
 
-Now, we'll leverage the `SharedInformerFactory` class, you are also already aware of, to construct and register the `SharedIndexInformer` for our Foo custom resource.
+Now, we'll leverage the `SharedInformerFactory` class, which you are also already aware of, to construct and register the `SharedIndexInformer` for our Foo custom resource.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 24

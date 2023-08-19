@@ -14,7 +14,7 @@ command: |
 clear: true
 ```
 
-The Spring Initializr will get us most of the way (it does a lot of code generation) but we need to add two dependencies not available at start.spring.io. The official Java client for Kubernetes, and integration with the JSON mapping library Jackson.
+The Spring Initializr will get us most of the way (it does a lot of code generation), but we need to add two dependencies not available at start.spring.io. The official Java client for Kubernetes and integration with the JSON mapping library Jackson.
 
 ```editor:insert-lines-before-line
 file: controller/build.gradle
@@ -46,7 +46,7 @@ Now we have the Java class representations of the CRD and can start with the imp
 
 The Kubernetes Java Client provides everything we need to implement the controller. 
 
-The `ControllerBuilder` builder library helps us to configure the basic controller functionality, and provide an instance of it.
+The `ControllerBuilder` builder library helps us to configure the basic controller functionality and provide an instance of it.
 ```editor:append-lines-to-file
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 description: Create initial controller configuration
@@ -86,14 +86,14 @@ text: |2
 ```
 For the configuration of our controller instance, we are injecting three dependencies:
 - A `SharedIndexInformer` is a cache for a resource, so the controller does not need to continuously poll the Kubernetes cluster (API server) to check if there are any new CRD instances created, updated, or deleted
-- The `SharedInformerFactory` class is used to construct and register all defined informers for different api types in a controller
-- The `Reconciler`` implements the functionality of related resources and will be invoked when they are created, update, deleted, etc.
+- The `SharedInformerFactory` class is used to construct and register all defined informers for different API types in a controller
+- The `Reconciler`` implements the functionality of related resources and will be invoked when they are created, updated, deleted, etc.
 
 The static `ControllerBuilder.defaultBuilder` method creates a builder instance with several default values, which can be overridden. It accepts the provided **SharedInformerFactory instance as a parameter to validate that an informer for the resource to be watched is registered - in our case the V1Foo class**.
 
-**To conigure the resources to be watched**, and the interval **we are using the static `ControllerBuilder.controllerWatchBuilder` method**.
+**To configure the resources to be watched**, and the interval **we are using the static `ControllerBuilder.controllerWatchBuilder` method**.
 
-The provided `Reconciler` is set via the `withReconciler` method, and the **`withReadyFunc` defines a pre-flight check** that has to be fullfiled before the controller can run. In this case, whether the shared informer's store has synced.
+The provided `Reconciler` is set via the `withReconciler` method, and the **`withReadyFunc` defines a pre-flight check** that has to be fulfilled before the controller can run. In this case, whether the shared informer's store has synced.
 
 For this demo, we reduce the worker thread count to two from the current default of 16.
 
@@ -102,11 +102,6 @@ After doing all the initialization, we've to start our registered informer and t
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 34
 text: |2
-
-      @Bean
-      ExecutorService executorService() {
-          return Executors.newCachedThreadPool();
-      }
 
       @Bean
       public CommandLineRunner commandLineRunner(SharedInformerFactory sharedInformerFactory, Controller controller) {
@@ -121,7 +116,6 @@ file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.ja
 line: 11
 text: |2
   import org.springframework.boot.CommandLineRunner;
-  import java.util.concurrent.ExecutorService;
   import java.util.concurrent.Executors;
 ```
 

@@ -12,7 +12,6 @@ import io.kubernetes.client.openapi.ApiClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.CommandLineRunner;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
@@ -66,11 +65,6 @@ public class ControllerConfiguration {
                 .withReadyFunc(informer::hasSynced)
                 .withName("fooController")
                 .build();
-    }
-
-    @Bean
-    ExecutorService executorService() {
-        return Executors.newCachedThreadPool();
     }
 
     @Bean

@@ -29,7 +29,7 @@ foo-controller-f686bb89f  foo-controller      2m           263Mi
 ```
 {% endraw %}
 
-In the case your **application has to recover or scale rapidly, startup time and compute resources become a concern**. If an application starts slowly, it might mean your app cannot scale fast enough to handle a sudden increase in demand, and **if it consumes a lot of resources (memory, CPU, etc) and scales to a large degree, that means increased cost**.
+In the case, your **application has to recover or scale rapidly, startup time and compute resources become a concern**. If an application starts slowly, it might mean your app cannot scale fast enough to handle a sudden increase in demand, and **if it consumes a lot of resources (memory, CPU, etc.) and scales to a large degree, that means increased cost**.
 
 Making sure we can **optimize both performance (start time) and resource consumption can be a game changer in the cloud**. 
 Let's see how Spring solves this problem for you!
@@ -98,7 +98,7 @@ Spring Boot applications are typically dynamic, and configuration is performed a
 
 When these restrictions are in place, it becomes possible for Spring to perform ahead-of-time processing during build-time and generate additional assets that GraalVM can use. 
 
-You can **get started** very **easily by using start.spring.io to create a new project, and adding the  Maven or Gradle GraalVM Native Build Tools plugin.**
+You can **get started** very **easily by using start.spring.io to create a new project and adding the  Maven or Gradle GraalVM Native Build Tools plugin.**
 
 **For Maven**, the `spring-boot-starter-parent` declares a `native` profile that configures the executions that need to run to create a native image. You can activate profiles using the `-P` flag on the command line.
 
@@ -111,21 +111,21 @@ text: |1
      id 'org.graalvm.buildtools.native' version '0.9.23'
 ```
 
-With plugin you're able to invoke the native image compiler from your build with the following commands for Maven and Gradle.
+With the plugin, you're able to invoke the native image compiler from your build with the following commands for Maven and Gradle.
 ```
 mvn -Pnative native:compile
 gradle nativeCompile
 ```
 
-**Spring Boot also includes buildpack support for native images directly** for both Maven and Gradle. Due to the auto-configured AOT tasks, **with Gradle, the bootBuildImage task will now generate a native image** rather than a JVM one **without any additional paramters**.
+**Spring Boot also includes buildpack support for native images directly** for both Maven and Gradle. Due to the auto-configured AOT tasks, **with Gradle, the bootBuildImage task will now generate a native image** rather than a JVM one **without any additional parameters**.
 ```
-(cd ~/controller/ && ./gradlew bootBuildImage --imageName={{ registry_host }}/foo-controller)
+(cd ~/controller/ && ./gradlew bootBuildImage --imageName={{ registry_host }}/foo-controller-native)
 ```
 
 Let's now see how the **controller performs as a native image**! 
 As you learned, the compilation of native images takes much longer and consumes more resources. Therefore, it's already done for you.
 
-You may still remember that we **used a YAML template which we loaded from the Classpath** in the Reconciler instead of programmatically building up the Deployment from scratch, and that **undetected usages of classpath resources have to be provided to the native-image tool** in the form of configuration files.**
+You may still remember that we **used a YAML template which we loaded from the Classpath** in the Reconciler instead of programmatically building up the Deployment from scratch and that **undetected usages of classpath resources have to be provided to the native-image tool** in the form of configuration files.**
 
 To provide this configuration to the native-image tool with Spring Boot, there is a `RuntimeHints API`.
 It collects the need for reflection, resource loading, serialization, and JDK proxies at runtime. 
