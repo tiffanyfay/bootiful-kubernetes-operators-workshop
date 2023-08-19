@@ -11,196 +11,197 @@
  */
 
 
-package io.spring.controller.models;
+ package io.spring.controller.models;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.kubernetes.client.openapi.models.V1ListMeta;
-import io.spring.controller.models.V1Foo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-/**
- * FooList is a list of Foo
- */
-@ApiModel(description = "FooList is a list of Foo")
-@JsonPropertyOrder({
-  V1FooList.JSON_PROPERTY_API_VERSION,
-  V1FooList.JSON_PROPERTY_ITEMS,
-  V1FooList.JSON_PROPERTY_KIND,
-  V1FooList.JSON_PROPERTY_METADATA
-})
-@JsonTypeName("v1.FooList")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-08-13T12:05:58.957Z[Etc/UTC]")
-public class V1FooList implements io.kubernetes.client.common.KubernetesListObject {
-  public static final String JSON_PROPERTY_API_VERSION = "apiVersion";
-  private String apiVersion;
-
-  public static final String JSON_PROPERTY_ITEMS = "items";
-  private List<V1Foo> items = new ArrayList<>();
-
-  public static final String JSON_PROPERTY_KIND = "kind";
-  private String kind;
-
-  public static final String JSON_PROPERTY_METADATA = "metadata";
-  private V1ListMeta metadata = null;
-
-
-  public V1FooList apiVersion(String apiVersion) {
-    
-    this.apiVersion = apiVersion;
-    return this;
-  }
-
+ import java.util.Objects;
+ import java.util.Arrays;
+ import com.fasterxml.jackson.annotation.JsonInclude;
+ import com.fasterxml.jackson.annotation.JsonProperty;
+ import com.fasterxml.jackson.annotation.JsonCreator;
+ import com.fasterxml.jackson.annotation.JsonTypeName;
+ import com.fasterxml.jackson.annotation.JsonValue;
+ import io.kubernetes.client.openapi.models.V1ListMeta;
+ import io.spring.controller.models.V1Foo;
+ import io.swagger.annotations.ApiModel;
+ import io.swagger.annotations.ApiModelProperty;
+ import java.util.ArrayList;
+ import java.util.List;
+ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+ 
+ /**
+  * FooList is a list of Foo
+  */
+ @ApiModel(description = "FooList is a list of Foo")
+ @JsonPropertyOrder({
+   V1FooList.JSON_PROPERTY_API_VERSION,
+   V1FooList.JSON_PROPERTY_ITEMS,
+   V1FooList.JSON_PROPERTY_KIND,
+   V1FooList.JSON_PROPERTY_METADATA
+ })
+ @JsonTypeName("v1.FooList")
+ @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-08-14T10:36:48.382Z[Etc/UTC]")
+ public class V1FooList implements io.kubernetes.client.common.KubernetesListObject {
+   public static final String JSON_PROPERTY_API_VERSION = "apiVersion";
+   private String apiVersion;
+ 
+   public static final String JSON_PROPERTY_ITEMS = "items";
+   private List<V1Foo> items = new ArrayList<>();
+ 
+   public static final String JSON_PROPERTY_KIND = "kind";
+   private String kind;
+ 
+   public static final String JSON_PROPERTY_METADATA = "metadata";
+   private V1ListMeta metadata = null;
+ 
+ 
+   public V1FooList apiVersion(String apiVersion) {
+     
+     this.apiVersion = apiVersion;
+     return this;
+   }
+ 
+    /**
+    * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+    * @return apiVersion
+   **/
+   @javax.annotation.Nullable
+   @ApiModelProperty(value = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources")
+   @JsonProperty(JSON_PROPERTY_API_VERSION)
+   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+ 
+   public String getApiVersion() {
+     return apiVersion;
+   }
+ 
+ 
+   public void setApiVersion(String apiVersion) {
+     this.apiVersion = apiVersion;
+   }
+ 
+ 
+   public V1FooList items(List<V1Foo> items) {
+     
+     this.items = items;
+     return this;
+   }
+ 
+   public V1FooList addItemsItem(V1Foo itemsItem) {
+     this.items.add(itemsItem);
+     return this;
+   }
+ 
+    /**
+    * List of foos. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md
+    * @return items
+   **/
+   @ApiModelProperty(required = true, value = "List of foos. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md")
+   @JsonProperty(JSON_PROPERTY_ITEMS)
+   @JsonInclude(value = JsonInclude.Include.ALWAYS)
+ 
+   public List<V1Foo> getItems() {
+     return items;
+   }
+ 
+ 
+   public void setItems(List<V1Foo> items) {
+     this.items = items;
+   }
+ 
+ 
+   public V1FooList kind(String kind) {
+     
+     this.kind = kind;
+     return this;
+   }
+ 
+    /**
+    * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+    * @return kind
+   **/
+   @javax.annotation.Nullable
+   @ApiModelProperty(value = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds")
+   @JsonProperty(JSON_PROPERTY_KIND)
+   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+ 
+   public String getKind() {
+     return kind;
+   }
+ 
+ 
+   public void setKind(String kind) {
+     this.kind = kind;
+   }
+ 
+ 
+   public V1FooList metadata(V1ListMeta metadata) {
+     
+     this.metadata = metadata;
+     return this;
+   }
+ 
+    /**
+    * Get metadata
+    * @return metadata
+   **/
+   @javax.annotation.Nullable
+   @ApiModelProperty(value = "")
+   @JsonProperty(JSON_PROPERTY_METADATA)
+   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+ 
+   public V1ListMeta getMetadata() {
+     return metadata;
+   }
+ 
+ 
+   public void setMetadata(V1ListMeta metadata) {
+     this.metadata = metadata;
+   }
+ 
+ 
+   @Override
+   public boolean equals(Object o) {
+     if (this == o) {
+       return true;
+     }
+     if (o == null || getClass() != o.getClass()) {
+       return false;
+     }
+     V1FooList v1FooList = (V1FooList) o;
+     return Objects.equals(this.apiVersion, v1FooList.apiVersion) &&
+         Objects.equals(this.items, v1FooList.items) &&
+         Objects.equals(this.kind, v1FooList.kind) &&
+         Objects.equals(this.metadata, v1FooList.metadata);
+   }
+ 
+   @Override
+   public int hashCode() {
+     return Objects.hash(apiVersion, items, kind, metadata);
+   }
+ 
+ 
+   @Override
+   public String toString() {
+     StringBuilder sb = new StringBuilder();
+     sb.append("class V1FooList {\n");
+     sb.append("    apiVersion: ").append(toIndentedString(apiVersion)).append("\n");
+     sb.append("    items: ").append(toIndentedString(items)).append("\n");
+     sb.append("    kind: ").append(toIndentedString(kind)).append("\n");
+     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+     sb.append("}");
+     return sb.toString();
+   }
+ 
    /**
-   * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
-   * @return apiVersion
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources")
-  @JsonProperty(JSON_PROPERTY_API_VERSION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getApiVersion() {
-    return apiVersion;
-  }
-
-
-  public void setApiVersion(String apiVersion) {
-    this.apiVersion = apiVersion;
-  }
-
-
-  public V1FooList items(List<V1Foo> items) {
-    
-    this.items = items;
-    return this;
-  }
-
-  public V1FooList addItemsItem(V1Foo itemsItem) {
-    this.items.add(itemsItem);
-    return this;
-  }
-
-   /**
-   * List of foos. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md
-   * @return items
-  **/
-  @ApiModelProperty(required = true, value = "List of foos. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md")
-  @JsonProperty(JSON_PROPERTY_ITEMS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public List<V1Foo> getItems() {
-    return items;
-  }
-
-
-  public void setItems(List<V1Foo> items) {
-    this.items = items;
-  }
-
-
-  public V1FooList kind(String kind) {
-    
-    this.kind = kind;
-    return this;
-  }
-
-   /**
-   * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-   * @return kind
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds")
-  @JsonProperty(JSON_PROPERTY_KIND)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getKind() {
-    return kind;
-  }
-
-
-  public void setKind(String kind) {
-    this.kind = kind;
-  }
-
-
-  public V1FooList metadata(V1ListMeta metadata) {
-    
-    this.metadata = metadata;
-    return this;
-  }
-
-   /**
-   * Get metadata
-   * @return metadata
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
-  @JsonProperty(JSON_PROPERTY_METADATA)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public V1ListMeta getMetadata() {
-    return metadata;
-  }
-
-
-  public void setMetadata(V1ListMeta metadata) {
-    this.metadata = metadata;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    V1FooList v1FooList = (V1FooList) o;
-    return Objects.equals(this.apiVersion, v1FooList.apiVersion) &&
-        Objects.equals(this.items, v1FooList.items) &&
-        Objects.equals(this.kind, v1FooList.kind) &&
-        Objects.equals(this.metadata, v1FooList.metadata);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(apiVersion, items, kind, metadata);
-  }
-
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class V1FooList {\n");
-    sb.append("    apiVersion: ").append(toIndentedString(apiVersion)).append("\n");
-    sb.append("    items: ").append(toIndentedString(items)).append("\n");
-    sb.append("    kind: ").append(toIndentedString(kind)).append("\n");
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-
-}
-
+    * Convert the given object to string with each line indented by 4 spaces
+    * (except the first line).
+    */
+   private String toIndentedString(Object o) {
+     if (o == null) {
+       return "null";
+     }
+     return o.toString().replace("\n", "\n    ");
+   }
+ 
+ }
+ 
+ 

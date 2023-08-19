@@ -304,7 +304,7 @@ Finally, we have to provide an instance of our reconciler and the API classes as
 **Using the injected `ApiClient` instance is important here**, as otherwise the APIs will be configured to use the default configuration and not what you for example provide as configuration with a mounted Kubernetes service account token.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 33
+line: 32
 description: Provide an instance of our reconciler and the API classes as a bean
 text: |2
 
@@ -327,7 +327,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 17
+line: 16
 text: |2
   import io.kubernetes.client.openapi.apis.AppsV1Api;
   import io.kubernetes.client.openapi.apis.CoreV1Api;

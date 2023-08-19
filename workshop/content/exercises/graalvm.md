@@ -132,7 +132,8 @@ It collects the need for reflection, resource loading, serialization, and JDK pr
 Several contracts are handled automatically during AOT processing. For cases that the **core container cannot infer**, you can **register such hints programmatically** by implementing the `RuntimeHintsRegistrar` interface. 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 113
+line: 121
+description: Add RuntimeHintsRegistrar implementation for resource hint
 text: |2
 
       static class ResourceAccessHints implements RuntimeHintsRegistrar {
@@ -146,6 +147,7 @@ text: |2
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 23
+description: Add imports
 text: |2
   import org.springframework.aot.hint.RuntimeHints;
   import org.springframework.aot.hint.RuntimeHintsRegistrar;
@@ -154,7 +156,8 @@ text: |2
 Implementations of this interface can be registered using `@ImportRuntimeHints` on any Spring bean or @Bean factory method.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 30
+line: 26
+description: Register RuntimeHintsRegistrar implementation
 text: |2
   import org.springframework.context.annotation.ImportRuntimeHints;
 

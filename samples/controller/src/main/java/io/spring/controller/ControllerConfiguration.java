@@ -13,9 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.CommandLineRunner;
 import java.util.concurrent.Executors;
-import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-
+import io.kubernetes.client.openapi.apis.AppsV1Api;
 import java.time.Duration;
 
 @Configuration
@@ -31,7 +30,7 @@ public class ControllerConfiguration {
         GenericKubernetesApi<V1Foo, V1FooList> api) {
       return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
     }
-
+    
     @Bean
     AppsV1Api appsV1Api(ApiClient apiClient) {
         return new AppsV1Api(apiClient);
@@ -48,22 +47,20 @@ public class ControllerConfiguration {
                           AppsV1Api appsV1Api) {
         return new FooReconciler(parentInformer, coreV1Api, appsV1Api);
     }
-
+    
     @Bean
     Controller controller(SharedInformerFactory sharedInformerFactory,
                           SharedIndexInformer<V1Foo> informer,
                           Reconciler reconciler) {
-        var builder = ControllerBuilder
+        return ControllerBuilder
                 .defaultBuilder(sharedInformerFactory)
                 .watch(q -> ControllerBuilder
                         .controllerWatchBuilder(V1Foo.class, q)
                         .withResyncPeriod(Duration.ofSeconds(30))
                         .build())
-                .withWorkerCount(2);
-        return builder
                 .withReconciler(reconciler)
                 .withReadyFunc(informer::hasSynced)
-                .withName("fooController")
+                .withWorkerCount(2)
                 .build();
     }
 

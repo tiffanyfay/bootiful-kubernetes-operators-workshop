@@ -84,15 +84,17 @@ public class FooReconciler implements Reconciler {
     }
 
     private void applyConfigMap(V1ConfigMap configMap) throws ApiException {
-        var name = configMap.getMetadata().getName();
         var namespace = configMap.getMetadata().getNamespace();
-        var configMapList = coreV1Api.listNamespacedConfigMap(namespace, null, null, null, null, null, null, null, null, null, null);
-        boolean configMapExist = configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
-        if (configMapExist) {
-            coreV1Api.replaceNamespacedConfigMap(name, namespace, configMap, null, null, null, null);
+        if (configMapExists(configMap)) {
+            coreV1Api.replaceNamespacedConfigMap(configMap.getMetadata().getName(), namespace, configMap, null, null, null, null);
         } else {
             coreV1Api.createNamespacedConfigMap(namespace, configMap, "true", null, null, null);
         }
+    }
+
+    private boolean configMapExists(V1ConfigMap configMap) throws ApiException {
+        var configMapList = coreV1Api.listNamespacedConfigMap(configMap.getMetadata().getNamespace(), null, null, null, null, null, null, null, null, null, null);
+        return configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(configMap.getMetadata().getName()));
     }
 
     private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
@@ -104,14 +106,16 @@ public class FooReconciler implements Reconciler {
     }
 
     private void applyDeployment(V1Deployment deployment) throws ApiException {
-        var name = deployment.getMetadata().getName();
         var namespace = deployment.getMetadata().getNamespace();
-        var deploymentList = appsV1Api.listNamespacedDeployment(namespace, null, null, null, null, null, null, null, null, null, null);
-        boolean deploymentExist = deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
-        if (deploymentExist) {
-            appsV1Api.replaceNamespacedDeployment(name, namespace, deployment, null, null, null, null);
+        if (deploymentExists(deployment)) {
+            appsV1Api.replaceNamespacedDeployment(deployment.getMetadata().getName(), namespace, deployment, null, null, null, null);
         } else {
             appsV1Api.createNamespacedDeployment(namespace, deployment, "true", null, null, null);
         }
+    }
+
+    private boolean deploymentExists(V1Deployment deployment) throws ApiException {
+        var deploymentList = appsV1Api.listNamespacedDeployment(deployment.getMetadata().getNamespace(), null, null, null, null, null, null, null, null, null, null);
+        return deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(deployment.getMetadata().getName()));
     }
 }
