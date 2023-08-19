@@ -240,7 +240,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 88
+line: 90
 description: Add method to load YAML template and replace placeholders
 text: |2
 
@@ -268,7 +268,7 @@ text: |2
 ```
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 99
+line: 101
 description: Construct V1Deployment object, and apply it to Kubernetes (1/2)
 text: |2
 
