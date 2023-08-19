@@ -19,6 +19,7 @@ The Spring Initializr will get us most of the way (it does a lot of code generat
 ```editor:insert-lines-before-line
 file: controller/build.gradle
 line: 20
+description: Add additional dependencies
 text: |1
      implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
      implementation 'org.springframework.boot:spring-boot-starter-json'
@@ -100,7 +101,8 @@ For this demo, we reduce the worker thread count to two from the current default
 After doing all the initialization, we've to start our registered informer and the controller. 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 34
+line: 32
+description: Start registered informer and the controller
 text: |2
 
       @Bean
@@ -114,6 +116,7 @@ text: |2
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 11
+description: Add imports
 text: |2
   import org.springframework.boot.CommandLineRunner;
   import java.util.concurrent.Executors;
