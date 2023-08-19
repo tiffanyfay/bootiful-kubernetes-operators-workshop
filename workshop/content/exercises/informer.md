@@ -7,7 +7,7 @@ There are `SharedInformer`s that share data across multiple instances of the `In
 To configure a bean of type SharedIndexInformer<V1Foo>, we first need to create a `GenericKubernetesApi` for our generated Foo classes.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
-line: 19
+line: 18
 text: |2
 
       @Bean
