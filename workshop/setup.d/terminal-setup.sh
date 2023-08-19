@@ -7,6 +7,8 @@ kubectl create secret generic regcred --from-file=.dockerconfigjson=$REGISTRY_AU
 kubectl patch serviceaccount default -p '{"secrets": [{"name": "default-sa-token"}], "imagePullSecrets": [{"name": "regcred"}]}'
 mv samples/foo-crd.yaml .
 
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
 # JVM image
 docker pull docker.io/paketobuildpacks/builder:base
 docker pull docker.io/paketobuildpacks/run:base-cnb

@@ -179,7 +179,7 @@ You will see something similar to this.
 {% raw %}
 ```
 $ kubectl logs -l app=foo-controller -c foo-controller | grep "Started"
-2023-08-14T16:04:44.452Z  INFO 1 --- [           main] io.spring.controller.ControllerApplication   : Started Application in 0.276 seconds (process running for 0.281)
+2023-08-19T16:23:29.163Z  INFO 1 --- [           main] i.s.controller.ControllerApplication     : Started ControllerApplication in 2.626 seconds (process running for 3.247)
 ```
 {% endraw %}
 ... and the memory and CPU consumption is also reduced.
