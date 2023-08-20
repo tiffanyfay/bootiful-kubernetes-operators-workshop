@@ -156,12 +156,11 @@ text: |2
 Implementations of this interface can be registered using `@ImportRuntimeHints` on any Spring bean or @Bean factory method.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 26
+line: 45
 description: Register RuntimeHintsRegistrar implementation
 text: |2
-  import org.springframework.context.annotation.ImportRuntimeHints;
 
-  @ImportRuntimeHints(FooReconciler.ResourceAccessHints.class)
+    @ImportRuntimeHints(FooReconciler.ControllerConfiguration.class)
 ```
 
 If you have **classes that need binding** (mostly needed when serializing or deserializing JSON), most of the hints are automatically inferred, for example when accepting or returning data from a @RestController method. But when you work with WebClient or RestTemplate directly, you might need to use [@RegisterReflectionForBinding](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aot/hint/annotation/RegisterReflectionForBinding.html) annotation.
@@ -173,6 +172,7 @@ line: 21
 description: Register non directly used classes initialized via reflection
 text: |2
   import io.kubernetes.client.openapi.models.*;
+  import org.springframework.context.annotation.ImportRuntimeHints;
   import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
   @RegisterReflectionForBinding({ V1FooList.class, V1ConfigMapList.class, V1DeploymentList.class })
