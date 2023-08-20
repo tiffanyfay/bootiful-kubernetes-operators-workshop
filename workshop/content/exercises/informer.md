@@ -8,6 +8,7 @@ To configure a bean of type SharedIndexInformer<V1Foo>, we first need to create 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 18
+description: Create GenericKubernetesApi for Foo classes
 text: |2
 
       @Bean
@@ -20,6 +21,7 @@ Now, we'll leverage the `SharedInformerFactory` class, which you are also alread
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 23
+description: Configure SharedIndexInformer
 text: |2
 
       @Bean
@@ -32,6 +34,7 @@ We also have to add the missing imports.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 9
+description: Add imports
 text: |2
   import io.spring.controller.models.V1FooList;
   import io.kubernetes.client.util.generic.GenericKubernetesApi;

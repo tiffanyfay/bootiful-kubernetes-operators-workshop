@@ -16,3 +16,6 @@ docker pull docker.io/paketobuildpacks/run:base-cnb
 ## Native image
 docker pull docker.io/paketobuildpacks/builder:tiny
 docker pull docker.io/paketobuildpacks/run:tiny-cnb
+
+docker pull harbor.emea.end2end.link/tap-workshop/foo-controller-native
+docker tag harbor.emea.end2end.link/tap-workshop/foo-controller-native $REGISTRY_HOST/foo-controller-native
