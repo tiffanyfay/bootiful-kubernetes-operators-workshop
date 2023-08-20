@@ -16,7 +16,10 @@ import java.util.concurrent.Executors;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
 import java.time.Duration;
+import io.kubernetes.client.openapi.models.*;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
+@RegisterReflectionForBinding({ V1FooList.class, V1ConfigMapList.class, V1DeploymentList.class })
 @Configuration
 public class ControllerConfiguration {
 
