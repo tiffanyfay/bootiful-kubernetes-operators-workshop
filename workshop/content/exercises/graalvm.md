@@ -155,7 +155,7 @@ text: |2
 
 Implementations of this interface can be registered using `@ImportRuntimeHints` on any Spring bean or @Bean factory method.
 ```editor:insert-lines-before-line
-file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 45
 description: Register RuntimeHintsRegistrar implementation
 text: |2
@@ -167,7 +167,7 @@ If you have **classes that need binding** (mostly needed when serializing or des
 In our case, we have to register the List classes of the resources we are using, as they are not directly referenced in the implementation.
 
 ```editor:insert-lines-before-line
-file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 21
 description: Register non directly used classes initialized via reflection
 text: |2
