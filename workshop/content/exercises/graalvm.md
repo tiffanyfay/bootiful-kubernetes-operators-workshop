@@ -165,7 +165,18 @@ text: |2
 ```
 
 If you have **classes that need binding** (mostly needed when serializing or deserializing JSON), most of the hints are automatically inferred, for example when accepting or returning data from a @RestController method. But when you work with WebClient or RestTemplate directly, you might need to use [@RegisterReflectionForBinding](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aot/hint/annotation/RegisterReflectionForBinding.html) annotation.
+In our case, we have to register the List classes of the resources we are using, as they are not directly referenced in the implementation.
 
+```editor:insert-lines-before-line
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+line: 21
+description: Register non directly used classes initialized via reflection
+text: |2
+  import io.kubernetes.client.openapi.models.*;
+  import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
+
+  @RegisterReflectionForBinding({ V1FooList.class, V1ConfigMapList.class, V1DeploymentList.class })
+```
 
 After everything is prepared, let's update our deployment with the container image that is already built for you and find out how the startup time and resource consumption changed.
 ```terminal:execute
