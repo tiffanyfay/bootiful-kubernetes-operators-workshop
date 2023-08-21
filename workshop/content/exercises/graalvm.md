@@ -160,7 +160,7 @@ line: 45
 description: Register RuntimeHintsRegistrar implementation
 text: |2
 
-    @ImportRuntimeHints(FooReconciler.ControllerConfiguration.class)
+        @ImportRuntimeHints(FooReconciler.ResourceAccessHints.class)
 ```
 
 If you have **classes that need binding** (mostly needed when serializing or deserializing JSON), most of the hints are automatically inferred, for example when accepting or returning data from a @RestController method. But when you work with WebClient or RestTemplate directly, you might need to use [@RegisterReflectionForBinding](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aot/hint/annotation/RegisterReflectionForBinding.html) annotation.

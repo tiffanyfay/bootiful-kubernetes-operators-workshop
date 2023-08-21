@@ -13,10 +13,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.CommandLineRunner;
 import java.util.concurrent.Executors;
-import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+
 import java.time.Duration;
+
 import io.kubernetes.client.openapi.models.*;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 @RegisterReflectionForBinding({ V1FooList.class, V1ConfigMapList.class, V1DeploymentList.class })
@@ -33,7 +36,7 @@ public class ControllerConfiguration {
         GenericKubernetesApi<V1Foo, V1FooList> api) {
       return sharedInformerFactory.sharedIndexInformerFor(api, V1Foo.class, 0);
     }
-    
+
     @Bean
     AppsV1Api appsV1Api(ApiClient apiClient) {
         return new AppsV1Api(apiClient);
@@ -44,13 +47,15 @@ public class ControllerConfiguration {
         return new CoreV1Api(apiClient);
     }
 
+
+    @ImportRuntimeHints(FooReconciler.ResourceAccessHints.class)
     @Bean
     Reconciler reconciler(SharedIndexInformer<V1Foo> parentInformer,
                           CoreV1Api coreV1Api,
                           AppsV1Api appsV1Api) {
         return new FooReconciler(parentInformer, coreV1Api, appsV1Api);
     }
-    
+
     @Bean
     Controller controller(SharedInformerFactory sharedInformerFactory,
                           SharedIndexInformer<V1Foo> informer,

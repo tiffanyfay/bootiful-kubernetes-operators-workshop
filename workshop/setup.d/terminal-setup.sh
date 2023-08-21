@@ -19,3 +19,4 @@ docker pull docker.io/paketobuildpacks/run:tiny-cnb
 
 docker pull harbor.emea.end2end.link/tap-workshop/foo-controller-native
 docker tag harbor.emea.end2end.link/tap-workshop/foo-controller-native $REGISTRY_HOST/foo-controller-native
+docker push $REGISTRY_HOST/foo-controller-native
