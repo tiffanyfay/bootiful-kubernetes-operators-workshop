@@ -25,6 +25,7 @@ jobs:
           mkdir -p ${GEN_DIR}
           docker run \
             --rm \
+            --env OPENAPI_GENERATOR_COMMIT=v6.0.1 \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v "$(pwd)":"$(pwd)" \
             --network host \
