@@ -10,7 +10,7 @@ You will see something similar to this.
 {% raw %}
 ```
 $ kubectl logs -l app=foo-controller -c foo-controller | grep "Started"
-2023-08-14T19:08:47.891Z  INFO 1 --- [           main] io.spring.controller.ControllerApplication   : Started Application in 3.357 seconds (process running for 3.771)
+2023-08-22T05:47:55.352Z  INFO 1 --- [           main] i.s.controller.ControllerApplication     : Started ControllerApplication in 2.042 seconds (process running for 2.571)
 ```
 {% endraw %}
 
@@ -128,13 +128,13 @@ As you learned, the compilation of native images takes much longer and consumes 
 
 The Kubernetes Java Client is available as a special version with AOT compilation support.
 ```editor:select-matching-text
-file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+file: ~/controller/build.gradle
 description: Select Java client for Kubernetes dependency
 text: |
      implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
 ```
 ```editor:replace-text-selection
-file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+file: ~/controller/build.gradle
 description: Replace with Java client for Kubernetes AOT dependency
 text: |
      implementation 'io.kubernetes:client-java-spring-aot-integration:18.0.1'
