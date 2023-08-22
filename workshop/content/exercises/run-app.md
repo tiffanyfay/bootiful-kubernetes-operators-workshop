@@ -99,12 +99,12 @@ command: kubectl get foos,configmap,deployment
 clear: true
 ```
 
-To be able to discover our first Foo from outside of the cluster, we'll now create a `Service`. With a service of type `LoadBalancer` we would be able to directly access it via an external IP. In this case, it will be of type `ClusterIp` and externally exposed via an ingress controller.
+To be able to discover our first Foo from outside of the cluster, we'll now create a `Service`. With a service of type `LoadBalancer` we would be able to directly access it via an external IP. **In this case, it will be of type `ClusterIp` and externally exposed via an ingress controller.**
 ```terminal:execute
 command: kubectl expose deployment my-first-foo --port=80 --target-port=80
 clear: true
 ```
-The `Ingress` resource is already created for you. By clicking on the following action, a new tab will open, targeting your first Foo at `https://my-first-foo-{{ session_namespace }}.{{ ingress_domain }}`.
+**The `Ingress` resource is already created for you.** By clicking on the following action, a new tab will open, targeting your first Foo at `https://my-first-foo-{{ session_namespace }}.{{ ingress_domain }}`.
 ```dashboard:create-dashboard
 name: My first Foo
 url: https://my-first-foo-{{ session_namespace }}.{{ ingress_domain }}

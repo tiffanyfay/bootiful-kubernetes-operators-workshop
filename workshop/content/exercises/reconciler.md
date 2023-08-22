@@ -1,4 +1,4 @@
-A Reconciler implements a Kubernetes API for a specific resource by creating, updating, or deleting Kubernetes objects or by making changes to systems external to the cluster (e.g. cloud providers, github, etc).
+A **Reconciler implements a Kubernetes API for a specific resource by creating, updating, or deleting Kubernetes objects or by making changes to systems external to the cluster** (e.g. cloud providers, github, etc).
 
 The [Kubernetes Java Client](https://github.com/kubernetes-client/java) provides a **Reconciler interface** to implement custom controllers watching events on resources. 
 ```editor:append-lines-to-file
@@ -24,9 +24,9 @@ text: |2
       }
   }
 ```
-The `reconcile` method has one parameter with of type `Request`, which contains the information necessary to reconcile a resource object. This includes the information to uniquely identify the object - its name and namespace. It does not contain information about any specific event or the object's contents itself.
+The `reconcile` method has one parameter with of type `Request`, which **contains the information necessary to reconcile a resource object**. This includes the information to uniquely identify the object - **its name and namespace**. It **does not contain information about any specific event or the object's contents** itself.
 
-The method returns a `Result` object with the information of whether a request was handled successfully and, based on that, whether it should be requeued. It's also possible to configure when it should be requeued with a duration parameter.
+The method returns a `Result` object with the information of **whether a request was handled successfully and, based on that, whether it should be requeued**. It's also possible to configure when it should be requeued with a duration parameter.
 
 Let's start with the implementation of the actual functionality of our custom resource.
 ```editor:insert-lines-before-line
@@ -44,7 +44,7 @@ text: |2
 ```
 
 We are using a `Lister` with the information provided by the request to **get the related resource from the cache** of our configured running informer - which we have to inject as a dependency.
-If there is no related resource in the list, it is probably deleted, and we mark the request as handled.
+If there is **no related resource in the list, it is probably deleted, and we mark the request as handled**.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -68,14 +68,14 @@ text: |2
   import io.spring.controller.models.V1Foo;
 ```
 
-The Kubernetes Java Client provides related classes for all the out-of-the-box Kubernetes resources like deployments (V1Deployment), services (V1Service) etc.
+The **Kubernetes Java Client provides related classes for all the out-of-the-box Kubernetes resources** like deployments (V1Deployment), services (V1Service) etc.
 
-Now we'll construct a `V1ConfigMap` object containing all the required information for Kubernetes to create a `ConfigMap` resource, including the individual greeting as HTML for a Foo.
+Now we'll construct a `V1ConfigMap` object containing all the required information for Kubernetes to create a `ConfigMap` resource, **including the individual greeting as HTML for a Foo**.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 30
-description: Construct V1ConfigMap object (1/3)
+description: Construct V1ConfigMap object
 text: |2
 
           var configMapContent = Map.of("index.html", "<h1> Hello, " + resource.getSpec().getNickname() + " </h1>");
@@ -84,7 +84,7 @@ text: |2
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 36
-description: Construct V1ConfigMap object (2/3)
+description: Construct V1ConfigMap object - getConfigMap method
 text: |2
 
       private V1ConfigMap getConfigMap(String name, V1Foo resource, Map<String, String> configMapContent) {
@@ -99,11 +99,11 @@ text: |2
                 .build();
       }
 ```
-In addition to the classes, the Kubernetes Java Client also provides builders for them to make the object creation a little bit more readable.
+In addition to the classes, the **Kubernetes Java Client also provides builders** for them to make the object creation a little bit more readable.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 48
-description: Construct V1ConfigMap object (3/3)
+description: Construct V1ConfigMap object - owner reference
 text: |2
 
       private V1OwnerReference getOwnerReference(V1Foo owner) {
@@ -111,7 +111,7 @@ text: |2
                 .withName(owner.getMetadata().getName()).withUid(owner.getMetadata().getUid()).withController().build();
       }
 ```
-As you can see, we are adding an **owner reference to the ConfigMap**. This links it to the Foo resource, and it will be automatically deleted if the related Foo resource gets deleted, so we don't have to care about it.
+As you can see, we are adding an **owner reference to the ConfigMap**. This links it to the Foo resource, and it will be **automatically deleted if the related Foo resource gets deleted**, so we don't have to care about it.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -123,11 +123,11 @@ text: |2
   import java.util.Collections;
 ```
 
-After we have a `V1ConfigMap` object will all the information, it's time to apply it to our Kubernetes cluster.
+After we have a `V1ConfigMap` object will all the information, it's time to **apply it to our Kubernetes cluster**.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 36
-description: Apply ConfigMap to Kubernetes (1/2)
+description: Apply ConfigMap to Kubernetes
 text: |2
           try {
               applyConfigMap(configMap);
@@ -138,6 +138,14 @@ text: |2
 
 ```
 In the case of an API error, we are requeuing the request after ten seconds.
+
+To apply the ConfigMap to the Kubernetes cluster via the Kubernetes API, we could configure a `GenericKubernetesApi` instance for it, but the **Kubernetes Java Client also provides classes with a higher abstraction for the out-of-the-box Kubernetes resources**. Those are structured based on the API the resources belong to. 
+As we can see based on the following command, for ConfigMaps, it's the `CoreV1Api` class, which we inject an instance of via the constructor and configure later. 
+```terminal:execute
+command: |
+    kubectl api-resources | grep configmap
+```
+
 ```editor:select-matching-text
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 description: Select the constructor to add dependency injection of CoreV1Api instance
@@ -151,11 +159,11 @@ text: |2
       public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api) {
           this.coreV1Api = coreV1Api;
 ```
-To apply the ConfigMap to the Kubernetes cluster via the Kubernetes API, we could configure a `GenericKubernetesApi` instance for it, but the Kubernetes Java Client also provides classes with a higher abstraction for the out-of-the-box Kubernetes resources. Those are structured based on the API the resources belong to. 
-So for ConfigMaps, it's the `CoreV1Api` class, which we inject an instance of via the constructor and configure later. 
+
+As `CoreV1Api` **class doesn't provide an "apply" functionality, we have to implement it ourselves**. 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-description: Apply ConfigMap to Kubernetes (2/2)
+description: Apply ConfigMap to Kubernetes - applyConfigMap and configMapExists method
 line: 65
 text: |2
 
@@ -173,11 +181,10 @@ text: |2
           return configMapList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(configMap.getMetadata().getName()));
       }
 ```
-As `CoreV1Api` class doesn't provide an "apply" functionality, we have to implement it ourselves. 
-To get a list of all ConfigMaps in the namespace, we are using the `coreV1Api.listNamespacedConfigMap` method. With the resulting list, it will be then checked whether a ConfigMap with the name already exists in the namespace.
+To get a **list of all ConfigMaps in the namespace**, we are using the `coreV1Api.listNamespacedConfigMap` method. With the resulting list, it will be then **checked whether a ConfigMap with the name already exists in the namespace**.
 If that's the case, the `coreV1Api.replaceNamespacedConfigMap` will update the ConfigMap resource with the updated configuration.
 Otherwise, the `coreV1Api.createNamespacedConfigMap` method will be used to create the configured ConfigMap in the cluster.
-As you can see all those methods have several additional parameters, which we set to null, to just use the defaults.
+As you can see **all those methods have several additional parameters, which we set to null, to just use the defaults**.
 
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
@@ -193,7 +200,7 @@ The `Deployment` resource of an NGINX webserver is more or less **created in the
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 48
-description: Construct V1Deployment object, and apply it to Kubernetes (1/2)
+description: Construct V1Deployment object, and apply it to Kubernetes
 text: |2
 
           try {
@@ -205,7 +212,7 @@ text: |2
           }
 
 ```
-As for a Deployment, there is a lot more to configure than for a ConfigMap resource, we'll use a YAML template with placeholders to be replaced with values for the individual Foo resources.
+As for a **Deployment, there is a lot more to configure** than for a ConfigMap resource, we'll use a **YAML template with placeholders** to be replaced with values for the individual Foo resources.
 ```editor:append-lines-to-file
 file: ~/controller/src/main/resources/deployment-template.yaml
 description: Add deployment YAML template to resources
@@ -249,7 +256,14 @@ text: |2
                 "deployment-template.yaml").getInputStream()));
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
 ```
-The static `Yaml.loadAs` method of the Kubernetes Java Client provides the functionality to map a YAML string into the related resource instance class.
+The static `Yaml.loadAs` method **of the Kubernetes Java Client provides the functionality to map a YAML string into the related resource instance class**.
+
+Based on the information we get from the following command, for the deployment, we have to import an instance of the `AppsV1Api` class.
+```terminal:execute
+command: |
+    kubectl api-resources | grep configmap
+```
+
 ```editor:select-matching-text
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 description: Select the constructor to add dependency injection of AppsV1Api instance
@@ -263,10 +277,12 @@ text: |2
       public FooReconciler(SharedIndexInformer<V1Foo> informer, CoreV1Api coreV1Api, AppsV1Api appsV1Api) {
           this.appsV1Api = appsV1Api;
 ```
+
+As the implementation of the `applyDeployment` **is similar to** the `applyConfigMap` method, we could **remove some lines of duplicate code by using** a `GenericKubernetesApi` instead of the strongly typed ones, but we would **lose the higher abstraction**.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 101
-description: Construct V1Deployment object, and apply it to Kubernetes (1/2)
+description: Construct V1Deployment object, and apply it to Kubernetes - applyDeployment and deploymentExists method
 text: |2
 
       private void applyDeployment(V1Deployment deployment) throws ApiException {
@@ -283,7 +299,6 @@ text: |2
           return deploymentList.getItems().stream().anyMatch(item -> item.getMetadata().getName().equals(deployment.getMetadata().getName()));
       }
 ```
-As the implementation of the `applyDeployment` is similar to the `applyConfigMap` method, we could remove some lines of duplicate code by using a `GenericKubernetesApi` instead of the strongly typed ones, but we would lose the higher abstraction.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
 line: 17
@@ -297,8 +312,8 @@ text: |2
   import java.io.InputStreamReader;
 ```
 
-Finally, we have to provide an instance of our reconciler and the API classes as a bean.
-**Using the injected `ApiClient` instance is important here**, as otherwise the APIs will be configured to use the default configuration and not what you for example provide as configuration with a mounted Kubernetes service account token.
+Finally, we have to **provide an instance of our reconciler and the API classes as a bean**.
+**Using the injected `ApiClient` instance is important here**, as **otherwise the APIs will be configured to use the default configuration and not what you for example provide as configuration with a mounted Kubernetes service account token**.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/ControllerConfiguration.java
 line: 32
