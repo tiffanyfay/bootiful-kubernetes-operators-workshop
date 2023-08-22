@@ -130,8 +130,7 @@ The Kubernetes Java Client is available as a special version with AOT compilatio
 ```editor:select-matching-text
 file: ~/controller/build.gradle
 description: Select Java client for Kubernetes dependency
-text: |
-     implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
+text: implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
 ```
 ```editor:replace-text-selection
 file: ~/controller/build.gradle
