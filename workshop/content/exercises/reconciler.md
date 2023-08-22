@@ -254,6 +254,8 @@ text: |2
       private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
           var deploymentYaml = FileCopyUtils.copyToString(new InputStreamReader(new ClassPathResource(
                 "deployment-template.yaml").getInputStream()));
+          deploymentYaml = deploymentYaml.replaceAll("NAMESPACE", resource.getMetadata().getNamespace())
+                    .replaceAll("NAME", name);
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
       }
 ```
@@ -262,7 +264,7 @@ The static `Yaml.loadAs` method **of the Kubernetes Java Client provides the fun
 Based on the information we get from the following command, for the deployment, we have to import an instance of the `AppsV1Api` class.
 ```terminal:execute
 command: |
-    kubectl api-resources | grep configmap
+    kubectl api-resources | grep deployment
 ```
 
 ```editor:select-matching-text
@@ -282,7 +284,7 @@ text: |2
 As the implementation of the `applyDeployment` **is similar to** the `applyConfigMap` method, we could **remove some lines of duplicate code by using** a `GenericKubernetesApi` instead of the strongly typed ones, but we would **lose the higher abstraction**.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 99
+line: 101
 description: Construct V1Deployment object, and apply it to Kubernetes - applyDeployment and deploymentExists method
 text: |2
 
