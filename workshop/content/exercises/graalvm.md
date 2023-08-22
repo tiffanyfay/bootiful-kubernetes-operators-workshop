@@ -125,6 +125,21 @@ gradle nativeCompile
 Let's now see how the **controller performs as a native image**! 
 As you learned, the compilation of native images takes much longer and consumes more resources. Therefore, it's already done for you.
 
+
+The Kubernetes Java Client is available as a special version with AOT compilation support.
+```editor:select-matching-text
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+description: Select Java client for Kubernetes dependency
+text: |
+     implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
+```
+```editor:replace-text-selection
+file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
+description: Replace with Java client for Kubernetes AOT dependency
+text: |
+     implementation 'io.kubernetes:client-java-spring-aot-integration:18.0.1'
+```
+
 You may still remember that we **used a YAML template which we loaded from the Classpath** in the Reconciler instead of programmatically building up the Deployment from scratch and that **undetected usages of classpath resources have to be provided to the native-image tool** in the form of configuration files.**
 
 To provide this configuration to the native-image tool with Spring Boot, there is a `RuntimeHints API`.
@@ -175,7 +190,7 @@ text: |2
   import org.springframework.context.annotation.ImportRuntimeHints;
   import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
-  @RegisterReflectionForBinding({ V1FooList.class, V1ConfigMapList.class, V1DeploymentList.class })
+  @RegisterReflectionForBinding({ V1Foo.class, V1FooList.class })
 ```
 
 After everything is prepared, let's update our deployment with the container image that is already built for you and find out how the startup time and resource consumption changed.
@@ -193,7 +208,7 @@ You will see something similar to this.
 {% raw %}
 ```
 $ kubectl logs -l app=foo-controller -c foo-controller | grep "Started"
-2023-08-19T16:23:29.163Z  INFO 1 --- [           main] i.s.controller.ControllerApplication     : Started ControllerApplication in 2.626 seconds (process running for 3.247)
+2023-08-22T05:24:37.120Z  INFO 1 --- [           main] i.s.controller.ControllerApplication     : Started ControllerApplication in 0.035 seconds (process running for 0.041)
 ```
 {% endraw %}
 ... and the memory and CPU consumption is also reduced.
