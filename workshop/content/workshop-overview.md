@@ -9,3 +9,5 @@ One of these extension points is the powerful **operator pattern**, which lets y
 In a nutshell, operators are **clients of the Kubernetes API that act as controllers for a Custom Resource.** We're going to see what that means and what implementing such an operator entails.
 
 **In this interactive workshop, we will learn how to build extensions for Kubernetes with operators using our beloved application framework Spring Boot.**
+
+This workshop is a spin off of Josh Long's repo: [github.com/kubernetes-native-java/controllers-101](https://github.com/kubernetes-native-java/controllers-101).

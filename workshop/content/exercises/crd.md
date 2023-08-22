@@ -12,7 +12,7 @@ CustomResourceDefinitions are available to all namespaces, but the **resources c
 
 `spec.versions` is the list of all API versions of the defined custom resource. For each version, the `name` (e.g. "v1" or "v2beta1"), `served` (enable/disable a version), and `storage` (the one version used to persist custom resources to storage, other available versions will be converted to it) fields are required.
 
-The `schema` describes an **OpenAPI v3 schema for custom fields used for validation** during creation and updates. In our basic example, a custom field `spec.name` of a `Foo` resource.
+The `schema` describes an **OpenAPI v3 schema for custom fields used for validation** during creation and updates. In our basic example, a custom field `spec.nickname` of a `Foo` resource.
 
 
 After the **creation of our CRD, a new namespaced REST API endpoint is created at** `/apis/foos.spring.io/v1/namespaces/*/foos/...`.
