@@ -35,7 +35,7 @@ clear: true
 
 Now we are finally ready to define the Kubernetes resources to run our custom controller on Kubernetes. In addition to the `Deployment` resource configured with the built container image, we also **have to assign cluster-wide privileges required for running our controller to the related `ServiceAccount`**, depending on the functionality implemented in the Reconciler. As no specific service account is defined in the deployment spec, the default service account in the default namespace will be used. 
 
-Starting with Kubernetes version **TODO**, **a token for Kubernetes API access will not automatically be created for service accounts anymore**. Instead, you have to create it manually to be mounted in the container to be used by the Kubernetes client.
+Starting with Kubernetes version 1.24, **a token for Kubernetes API access will not automatically be created for service accounts anymore**. Instead, you have to create it manually to be mounted in the container to be used by the Kubernetes client.
 
 ```editor:append-lines-to-file
 file: ~/controller-deployment.yaml

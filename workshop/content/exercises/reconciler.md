@@ -137,7 +137,7 @@ text: |2
           }
 
 ```
-In the case of an API error, we are requeuing the request after ten seconds.
+In the case of an API error, we are requeuing the request after ten seconds. If you want to get more information on the actual case of the exception, there is also an `ApiException.getResponseBody` method available.
 
 To apply the ConfigMap to the Kubernetes cluster via the Kubernetes API, we could configure a `GenericKubernetesApi` instance for it, but the **Kubernetes Java Client also provides classes with a higher abstraction for the out-of-the-box Kubernetes resources**. Those are structured based on the API the resources belong to. 
 As we can see based on the following command, for ConfigMaps, it's the `CoreV1Api` class, which we inject an instance of via the constructor and configure later. 
@@ -255,6 +255,7 @@ text: |2
           var deploymentYaml = FileCopyUtils.copyToString(new InputStreamReader(new ClassPathResource(
                 "deployment-template.yaml").getInputStream()));
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
+      }
 ```
 The static `Yaml.loadAs` method **of the Kubernetes Java Client provides the functionality to map a YAML string into the related resource instance class**.
 
@@ -281,7 +282,7 @@ text: |2
 As the implementation of the `applyDeployment` **is similar to** the `applyConfigMap` method, we could **remove some lines of duplicate code by using** a `GenericKubernetesApi` instead of the strongly typed ones, but we would **lose the higher abstraction**.
 ```editor:insert-lines-before-line
 file: ~/controller/src/main/java/io/spring/controller/FooReconciler.java
-line: 101
+line: 99
 description: Construct V1Deployment object, and apply it to Kubernetes - applyDeployment and deploymentExists method
 text: |2
 
