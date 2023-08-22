@@ -15,43 +15,40 @@
 
  import java.util.Objects;
  import java.util.Arrays;
- import com.fasterxml.jackson.annotation.JsonInclude;
- import com.fasterxml.jackson.annotation.JsonProperty;
- import com.fasterxml.jackson.annotation.JsonCreator;
- import com.fasterxml.jackson.annotation.JsonTypeName;
- import com.fasterxml.jackson.annotation.JsonValue;
+ import com.google.gson.TypeAdapter;
+ import com.google.gson.annotations.JsonAdapter;
+ import com.google.gson.annotations.SerializedName;
+ import com.google.gson.stream.JsonReader;
+ import com.google.gson.stream.JsonWriter;
  import io.kubernetes.client.openapi.models.V1ObjectMeta;
  import io.spring.controller.models.V1FooSpec;
  import io.swagger.annotations.ApiModel;
  import io.swagger.annotations.ApiModelProperty;
- import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+ import java.io.IOException;
  
  /**
   * V1Foo
   */
- @JsonPropertyOrder({
-   V1Foo.JSON_PROPERTY_API_VERSION,
-   V1Foo.JSON_PROPERTY_KIND,
-   V1Foo.JSON_PROPERTY_METADATA,
-   V1Foo.JSON_PROPERTY_SPEC,
-   V1Foo.JSON_PROPERTY_STATUS
- })
- @JsonTypeName("v1.Foo")
- @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-08-14T10:36:48.382Z[Etc/UTC]")
+ @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-08-21T19:16:14.455Z[Etc/UTC]")
  public class V1Foo implements io.kubernetes.client.common.KubernetesObject {
-   public static final String JSON_PROPERTY_API_VERSION = "apiVersion";
+   public static final String SERIALIZED_NAME_API_VERSION = "apiVersion";
+   @SerializedName(SERIALIZED_NAME_API_VERSION)
    private String apiVersion;
  
-   public static final String JSON_PROPERTY_KIND = "kind";
+   public static final String SERIALIZED_NAME_KIND = "kind";
+   @SerializedName(SERIALIZED_NAME_KIND)
    private String kind;
  
-   public static final String JSON_PROPERTY_METADATA = "metadata";
+   public static final String SERIALIZED_NAME_METADATA = "metadata";
+   @SerializedName(SERIALIZED_NAME_METADATA)
    private V1ObjectMeta metadata = null;
  
-   public static final String JSON_PROPERTY_SPEC = "spec";
+   public static final String SERIALIZED_NAME_SPEC = "spec";
+   @SerializedName(SERIALIZED_NAME_SPEC)
    private V1FooSpec spec;
  
-   public static final String JSON_PROPERTY_STATUS = "status";
+   public static final String SERIALIZED_NAME_STATUS = "status";
+   @SerializedName(SERIALIZED_NAME_STATUS)
    private Object status;
  
  
@@ -67,8 +64,6 @@
    **/
    @javax.annotation.Nullable
    @ApiModelProperty(value = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources")
-   @JsonProperty(JSON_PROPERTY_API_VERSION)
-   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
  
    public String getApiVersion() {
      return apiVersion;
@@ -92,8 +87,6 @@
    **/
    @javax.annotation.Nullable
    @ApiModelProperty(value = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds")
-   @JsonProperty(JSON_PROPERTY_KIND)
-   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
  
    public String getKind() {
      return kind;
@@ -117,8 +110,6 @@
    **/
    @javax.annotation.Nullable
    @ApiModelProperty(value = "")
-   @JsonProperty(JSON_PROPERTY_METADATA)
-   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
  
    public V1ObjectMeta getMetadata() {
      return metadata;
@@ -142,8 +133,6 @@
    **/
    @javax.annotation.Nullable
    @ApiModelProperty(value = "")
-   @JsonProperty(JSON_PROPERTY_SPEC)
-   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
  
    public V1FooSpec getSpec() {
      return spec;
@@ -167,8 +156,6 @@
    **/
    @javax.annotation.Nullable
    @ApiModelProperty(value = "")
-   @JsonProperty(JSON_PROPERTY_STATUS)
-   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
  
    public Object getStatus() {
      return status;

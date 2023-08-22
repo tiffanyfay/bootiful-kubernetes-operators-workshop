@@ -15,25 +15,22 @@
 
  import java.util.Objects;
  import java.util.Arrays;
- import com.fasterxml.jackson.annotation.JsonInclude;
- import com.fasterxml.jackson.annotation.JsonProperty;
- import com.fasterxml.jackson.annotation.JsonCreator;
- import com.fasterxml.jackson.annotation.JsonTypeName;
- import com.fasterxml.jackson.annotation.JsonValue;
+ import com.google.gson.TypeAdapter;
+ import com.google.gson.annotations.JsonAdapter;
+ import com.google.gson.annotations.SerializedName;
+ import com.google.gson.stream.JsonReader;
+ import com.google.gson.stream.JsonWriter;
  import io.swagger.annotations.ApiModel;
  import io.swagger.annotations.ApiModelProperty;
- import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+ import java.io.IOException;
  
  /**
   * V1FooSpec
   */
- @JsonPropertyOrder({
-   V1FooSpec.JSON_PROPERTY_NICKNAME
- })
- @JsonTypeName("v1_Foo_spec")
- @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-08-14T10:36:48.382Z[Etc/UTC]")
+ @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-08-21T19:16:14.455Z[Etc/UTC]")
  public class V1FooSpec {
-   public static final String JSON_PROPERTY_NICKNAME = "nickname";
+   public static final String SERIALIZED_NAME_NICKNAME = "nickname";
+   @SerializedName(SERIALIZED_NAME_NICKNAME)
    private String nickname;
  
  
@@ -49,8 +46,6 @@
    **/
    @javax.annotation.Nullable
    @ApiModelProperty(value = "The nickname of your Foo")
-   @JsonProperty(JSON_PROPERTY_NICKNAME)
-   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
  
    public String getNickname() {
      return nickname;

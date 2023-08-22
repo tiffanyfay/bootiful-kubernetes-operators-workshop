@@ -18,8 +18,8 @@ import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.util.Yaml;
 import org.springframework.core.io.ClassPathResource;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import org.springframework.util.FileCopyUtils;
+import java.io.InputStreamReader;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
@@ -100,10 +100,10 @@ public class FooReconciler implements Reconciler {
     }
 
     private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
-        var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
-                "deployment-template.yaml").getURI()));
+        var deploymentYaml = FileCopyUtils.copyToString(new InputStreamReader(new ClassPathResource(
+              "deployment-template.yaml").getInputStream()));
         deploymentYaml = deploymentYaml.replaceAll("NAMESPACE", resource.getMetadata().getNamespace())
-                    .replaceAll("NAME", name);
+                  .replaceAll("NAME", name);
         return Yaml.loadAs(deploymentYaml, V1Deployment.class);
     }
 

@@ -22,7 +22,7 @@ import io.kubernetes.client.openapi.models.*;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
-@RegisterReflectionForBinding({ V1FooList.class, V1ConfigMapList.class, V1DeploymentList.class })
+@RegisterReflectionForBinding({ V1Foo.class, V1FooList.class })
 @Configuration
 public class ControllerConfiguration {
 
