@@ -14,7 +14,7 @@ command: |
 clear: true
 ```
 
-The Spring Initializr will get us most of the way (it does a lot of code generation), but we need to add two dependencies not available at start.spring.io. The official Java client for Kubernetes and integration with the JSON mapping library Jackson.
+The Spring Initializr will get us most of the way (it does a lot of code generation), but we need to add the official Java client for Kubernetes dependency not available at start.spring.io.
 
 ```editor:insert-lines-before-line
 file: controller/build.gradle
@@ -22,7 +22,6 @@ line: 20
 description: Add additional dependencies
 text: |1
      implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
-     implementation 'org.springframework.boot:spring-boot-starter-json'
 ```
 
 #### Generating Java Classes for the CRD
@@ -33,7 +32,7 @@ To generate the class files from a custom resource definition, there is a [conta
 As this utility will create a [kind](https://kind.sigs.k8s.io/) Kubernetes cluster to fetch the OpenApi specification of the custom resource from it, we'll use a more lightweight approach in this workshop and download already generated Java classes by a [GitHub Action using this containerized utility](https://github.com/kubernetes-client/java/blob/master/docs/generate-model-from-third-party-resources.md#remote-generate-via-github-action). 
 ```terminal:execute
 command: |
-  wget https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop/releases/download/2023-08-14/generated-crd-classes.zip && unzip generated-crd-classes.zip && cp -r src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf src && rm generated-crd-classes.zip
+  wget https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop/releases/download/2023-08-21/generated-crd-classes.zip && unzip generated-crd-classes.zip && cp -r src/main/java/io/spring/controller/ controller/src/main/java/io/spring && rm -rf src && rm generated-crd-classes.zip
 description: Download generated Java classes and move them to controller project
 clear: true
 ```

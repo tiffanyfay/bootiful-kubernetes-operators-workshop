@@ -245,12 +245,9 @@ description: Add method to load YAML template and replace placeholders
 text: |2
 
       private V1Deployment getDeployment(String name, V1Foo resource) throws IOException {
-          var deploymentYaml = Files.readString(Path.of(new ClassPathResource(
-                  "deployment-template.yaml").getURI()));
-          deploymentYaml = deploymentYaml.replaceAll("NAMESPACE", resource.getMetadata().getNamespace())
-          		    .replaceAll("NAME", name);
+          var deploymentYaml = FileCopyUtils.copyToString(new InputStreamReader(new ClassPathResource(
+                "deployment-template.yaml").getInputStream()));
           return Yaml.loadAs(deploymentYaml, V1Deployment.class);
-      }
 ```
 The static `Yaml.loadAs` method of the Kubernetes Java Client provides the functionality to map a YAML string into the related resource instance class.
 ```editor:select-matching-text
@@ -296,8 +293,8 @@ text: |2
   import io.kubernetes.client.util.Yaml;
   import org.springframework.core.io.ClassPathResource;
   import java.io.IOException;
-  import java.nio.file.Files;
-  import java.nio.file.Path;
+  import org.springframework.util.FileCopyUtils;
+  import java.io.InputStreamReader;
 ```
 
 Finally, we have to provide an instance of our reconciler and the API classes as a bean.
