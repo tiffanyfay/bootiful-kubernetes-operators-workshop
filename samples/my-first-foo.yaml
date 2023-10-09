@@ -3,4 +3,4 @@ kind: Foo
 metadata:
   name: my-first-foo
 spec:
-  nickname: SpringOne
+  nickname: Spring Community
