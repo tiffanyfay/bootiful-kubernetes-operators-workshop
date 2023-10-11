@@ -16,7 +16,7 @@ $ kubectl logs -l app=foo-controller -c foo-controller | grep "Started"
 
 We can also have a closer look at the CPU and memory consumption.
 ```terminal:execute
-command: kubectl top pods -l app=foo-controller --containers
+command: kubectl top pods -l app=foo-controller --containers --all-namespaces
 clear: true
 ```
 You will see something similar to these results.
@@ -212,7 +212,7 @@ $ kubectl logs -l app=foo-controller -c foo-controller | grep "Started"
 {% endraw %}
 ... and the memory and CPU consumption is also reduced.
 ```terminal:execute
-command: kubectl top pods -l app=foo-controller --containers
+command: kubectl top pods -l app=foo-controller --containers --all-namespaces
 clear: true
 ```
 
