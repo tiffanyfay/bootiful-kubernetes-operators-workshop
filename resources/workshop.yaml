@@ -6,17 +6,17 @@ spec:
   title: Bootiful Kubernetes Operators
   description: A workshop that demonstrates how to build Kubernetes operators with Spring Boot.
   workshop:
-    image: ghcr.io/tiffanyfay/bootiful-kubernetes-operators-workshop:main 
+    image: ghcr.io/timosalm/bootiful-kubernetes-operators-workshop:main 
     files:
     - git:
-        url: https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop
+        url: https://github.com/timosalm/bootiful-kubernetes-operators-workshop
         ref: origin/main
       includePaths:
       - /workshop/**
       - /samples/**
   session:
     resources:
-      memory: 50Gi
+      memory: 10Gi
     namespaces:
       budget: custom
       security:
@@ -34,20 +34,234 @@ spec:
         storage: 10Gi
       registry:
         enabled: true
-      vcluster:
-        enabled: true
-        ingress:
-          enabled: true
-        objects:
-        - apiVersion: v1
-          kind: Secret
-          type: kubernetes.io/service-account-token
-          metadata:
-            name: default-sa-token
-            namespace: default
-            annotations:
-              kubernetes.io/service-account.name: "default"
     ingresses:
     - name: my-first-foo
-      host: my-first-foo-x-default-x-my-vcluster.$(session_namespace)
+      host: my-first-foo-x-default-x-contour-vcluster.$(session_namespace)
       port: 80
+    volumes:
+    - name: admin-credentials-config
+      secret:
+        secretName: $(session_name)-kubeconfig
+    volumeMounts:
+    - name: admin-credentials-config
+      mountPath: /opt/kubeconfig
+    objects:
+    - apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: $(session_name)-kapp-installer
+        namespace: $(workshop_namespace)
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: vcluster-deployer
+        namespace: $(workshop_namespace)
+      rules:
+      - apiGroups: ['']
+        resources: ['configmaps']
+        verbs: ['*']
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: vcluster-deployer-binding
+        namespace: $(workshop_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: vcluster-deployer
+      subjects:
+      - kind: ServiceAccount
+        name: $(session_name)-kapp-installer
+        namespace: $(workshop_namespace)
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: vcluster-deployer
+        namespace: $(session_namespace)
+      rules:
+      - apiGroups: ['*']
+        resources: ['*']
+        verbs: ['*']
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: vcluster-deployer-binding
+        namespace: $(session_namespace)
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: vcluster-deployer
+      subjects:
+      - kind: ServiceAccount
+        name: $(session_name)-kapp-installer
+        namespace: $(workshop_namespace)
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      metadata:
+        name: $(session_name)-vcluster-deployer
+      rules:
+      - apiGroups: [rbac.authorization.k8s.io]
+        resources: [clusterroles,clusterrolebindings]
+        verbs: ['*']
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: $(session_name)-vcluster-deployer-binding
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: $(session_name)-vcluster-deployer
+      subjects:
+      - kind: ServiceAccount
+        name: $(session_name)-kapp-installer
+        namespace: $(workshop_namespace)
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: $(session_name)-contour-vcluster-values
+        namespace: $(workshop_namespace)
+      stringData:
+        values.yaml: |
+          vcluster:
+            image: rancher/k3s:v1.25.14-k3s1
+          sync:
+            nodes:
+              enabled: true
+          proxy:
+            metricsServer:
+              nodes:
+                enabled: true
+              pods:
+                enabled: true
+          syncer:
+            extraArgs:
+            - --tls-san=contour-vcluster.$(session_namespace).svc.$(cluster_domain)
+            - --out-kube-config-server=https://contour-vcluster.$(session_namespace).svc.$(cluster_domain)
+          mapServices:
+            fromVirtual:
+            - from: projectcontour/contour-envoy
+              to: contour-envoy
+          init:
+            manifests: |-
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: projectcontour
+    - apiVersion: kappctrl.k14s.io/v1alpha1
+      kind: App
+      metadata:
+        name: $(session_name)-contour-vcluster-package
+        namespace: $(workshop_namespace)
+      spec:
+        serviceAccountName: $(session_name)-kapp-installer
+        syncPeriod: 720h
+        noopDelete: true
+        fetch:
+        - helmChart:
+            name: vcluster
+            repository:
+              url: https://charts.loft.sh
+        template:
+        - helmTemplate:
+            name: contour-vcluster
+            namespace: $(session_namespace)
+            valuesFrom:
+            - secretRef:
+                name: $(session_name)-contour-vcluster-values
+        - ytt:
+            inline:
+              paths:
+                overlays.yaml: |
+                  #@ load("@ytt:data", "data")
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.all, expects="1+"
+                  ---
+                  metadata:
+                    #@overlay/match missing_ok=True
+                    ownerReferences:
+                      - apiVersion: training.educates.dev/v1beta1
+                        kind: WorkshopSession
+                        blockOwnerDeletion: true
+                        controller: true
+                        name: $(session_name)
+                        uid: $(workshop_session_uid)
+        deploy:
+        - kapp:
+            rawOptions:
+            - --app-changes-max-to-keep=5
+
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: contour-values
+      stringData:
+        values.yaml: |
+          envoy:
+            service:
+              type: ClusterIP
+              externalTrafficPolicy: null
+            useHostPort: false
+    - apiVersion: kappctrl.k14s.io/v1alpha1
+      kind: App
+      metadata:
+        name: contour-package
+      spec:
+        noopDelete: true
+        syncPeriod: 24h
+        cluster:
+          namespace: default
+          kubeconfigSecretRef:
+            name: vc-contour-vcluster
+            key: config
+        fetch:
+        - helmChart:
+            name: contour
+            repository:
+              url: https://charts.bitnami.com/bitnami
+        template:
+        - helmTemplate:
+            name: contour
+            namespace: projectcontour
+            valuesFrom:
+            - secretRef:
+                name: contour-values
+        deploy:
+        - kapp:
+            rawOptions:
+            - --app-changes-max-to-keep=5
+    - apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: contour
+        annotations:
+          "nginx.ingress.kubernetes.io/proxy-send-timeout": "3600"
+          "nginx.ingress.kubernetes.io/proxy-read-timeout": "3600"
+          "projectcontour.io/websocket-routes": "/"
+          "projectcontour.io/response-timeout": "3600s"
+      spec:
+        rules:
+        - host: "*.$(session_name).$(ingress_domain)"
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                  service:
+                      name: contour-envoy
+                      port:
+                        number: 80
+    - apiVersion: secrets.educates.dev/v1beta1
+      kind: SecretCopier
+      metadata:
+        name: $(session_name)-kubeconfig
+      spec:
+        rules:
+        - sourceSecret:
+            name: vc-contour-vcluster
+            namespace: $(session_namespace)
+          targetNamespaces:
+            nameSelector:
+              matchNames:
+              - $(workshop_namespace)
+          targetSecret:
+            name: $(session_name)-kubeconfig
