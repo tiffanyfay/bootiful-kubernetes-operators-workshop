@@ -41,7 +41,7 @@ text: |2
   metadata:
     name: my-first-foo
   spec:
-    nickname: SpringOne
+    nickname: Spring Community
 ```
 ```terminal:execute
 command: |
