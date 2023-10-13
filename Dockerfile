@@ -1,4 +1,4 @@
-FROM ghcr.io/vmware-tanzu-labs/educates-jdk17-environment:2.5.2
+FROM ghcr.io/vmware-tanzu-labs/educates-jdk17-environment:2.6.16
 
 USER root
 
