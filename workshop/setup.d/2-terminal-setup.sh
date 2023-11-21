@@ -8,6 +8,11 @@ kubectl create secret generic regcred --from-file=.dockerconfigjson=$REGISTRY_AU
 kubectl patch serviceaccount default -p '{"secrets": [{"name": "default-sa-token"}], "imagePullSecrets": [{"name": "regcred"}]}'
 mv samples/foo-crd.yaml .
 
+while (! docker stats --no-stream >/dev/null 2>&1); do
+  echo "Waiting for Docker to launch..."
+  sleep 1
+done
+
 # JVM image
 docker pull docker.io/paketobuildpacks/builder:base
 docker pull docker.io/paketobuildpacks/run:base-cnb
