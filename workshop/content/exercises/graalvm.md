@@ -48,34 +48,17 @@ With the **ahead-of-time compilation** of the Java code to a standalone executab
 ![](../images/jit-vs-aot.png)
 
 ###### What are native images?
-- Standalone executables of ahead-of-time compiled Java code
+- Standalone executable of ahead-of-time compiled Java code
 - Includes the application classes, classes from its dependencies, runtime library classes, and statically linked native code from JDK
-- Runs without the need for a JVM, necessary components like for memory management, thread scheduling, and so on are included in a runtime system called "Substrate VM" 
+- Runs without the need for a JVM, necessary components are included in a runtime system called “Substrate VM” 
 - Specific to the OS and machine architecture for which it was compiled
-- Requires fewer resources, is smaller, and faster than regular Java applications running on a JVM
-
-The only way to do this at present is to use **GraalVM**, but in the future, similar technology may be available, like the OpenJDK Project Leyden. 
-
-##### GraalVM - A high-performance JDK distribution
-GraalVM is a high-performance JDK distribution by Oracle designed to **execute applications written in Java and other JVM languages** while **also providing runtimes for JavaScript, Ruby, Python, and a number of other popular languages**, which is made possible by **GraalVM's Truffle language implementation framework**.
-
-GraalVM **adds an advanced just-in-time (JIT) optimizing compiler**, which is written in Java, to the HotSpot Java Virtual Machine.
-
-GraalVM offers **three runtime modes**:
-- JVM runtime mode
-- Native image 
-- Java on Truffle for those none JVM languages
-
-![](../images/graalvm.png)
+- Requires fewer resources than regular Java applications running on a JVM
+- **GraalVM** is an advanced JDK with support for ahead-of-time Native Image compilation
 
 ##### Tradeoffs between JVM and native images
 **Native images** are able to **improve both the startup time and resource consumption** for your applications deployed on a serverless runtime, but you have to keep in mind that there are some trade-offs compared to the JVM.
 
-They **offer lower throughput and higher latency** because they can't optimize hot paths during runtime as much as the JVM can. 
 The **compilation takes much longer and consumes more resources**, which is bad for developer productivity. 
-Finally, the **platform is also less mature**, but it evolves and improves quickly.
-
-![](../images/graalvm-tradeoffs.png)
 
 For GraalVM native images, all the bytecode in the application needs to be **observed** and **analyzed** at **build time**.
 
@@ -87,6 +70,10 @@ However, this analysis cannot always completely predict all usages of the **Java
 
 To **make preparing these configuration files easier** and more convenient, GraalVM provides an **agent that tracks all usages of dynamic features of execution on a regular Java VM**. 
 During execution, the agent interfaces with the Java VM to intercept all calls that look up classes, methods, fields, resources, or request proxy accesses.
+
+Finally, Native images **offer lower throughput and higher latency** because they can't optimize hot paths during runtime as much as the JVM can, and the **platform is also less mature**, but it evolves and improves quickly.
+
+![](../images/graalvm-tradeoffs.png)
 
 ##### Spring Boot's GraalVM Native Image Support
 
@@ -228,6 +215,11 @@ foo-controller-6469688668  foo-controller      1m           60Mi
 
 *Hint: VMware Tanzu offers Enterprise Support for Spring Boot Native Applications compiled with the BellSoft Liberica native image Kit which is based on GraalVM Open Source.*
 
-###### A future solution: JVM Checkpoint Restore
+##### Other Options: JVM Checkpoint Restore and Class Data Sharing (CDS)
+- [Spring Framework 6.1 integrates with checkpoint/restore](https://docs.spring.io/spring-framework/reference/integration/checkpoint-restore.html) as implemented by [Project CRaC](https://openjdk.org/projects/crac/) to reduce the startup and warmup times of Spring-based Java applications with the JVM.
+- Class Data Sharing (CDS) is a JVM feature that reduces memory footprint and improves startup time
+Mature and production-ready technology that continuously improves with future enhancements through Project Leyden. Initial CDS support was introduced in [Spring Framework 6.1](https://docs.spring.io/spring-framework/reference/integration/cds.html). CDS is less restrictive than GraalVM and Project CRaC but the improvement is not as dramatic as with GraalVM or Project CRaC.
 
-Spring Framework 6.1 M1 integrates with checkpoint/restore as implemented by [Project CRaC](https://openjdk.org/projects/crac/) to reduce the startup and warmup times of Spring-based Java applications with the JVM. The CRaC (Coordinated Restore at Checkpoint) project researches the coordination of Java programs with mechanisms to checkpoint (make an image of, snapshot) a Java instance while it is executing and restoring it.
+
+
+
