@@ -95,7 +95,7 @@ Let's add the `org.graalvm.buildtools.native` plugin to the controller.
 file: controller/build.gradle
 line: 5
 text: |1
-     id 'org.graalvm.buildtools.native' version '0.9.23'
+     id 'org.graalvm.buildtools.native' version '0.9.28'
 ```
 
 With the plugin, you're able to invoke the native image compiler from your build with the following commands for Maven and Gradle.
