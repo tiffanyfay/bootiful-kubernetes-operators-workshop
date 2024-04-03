@@ -1,8 +1,8 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.2'
-	id 'io.spring.dependency-management' version '1.1.2'
-    id 'org.graalvm.buildtools.native' version '0.9.23'
+  id 'org.springframework.boot' version '3.2.4'
+  id 'io.spring.dependency-management' version '1.1.4'
+  id 'org.graalvm.buildtools.native' version '0.9.28'
 }
 
 group = 'io.spring'
@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-  implementation 'io.kubernetes:client-java-spring-aot-integration:18.0.1'
+  implementation 'io.kubernetes:client-java-spring-aot-integration:19.0.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

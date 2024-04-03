@@ -21,7 +21,7 @@ file: controller/build.gradle
 line: 20
 description: Add additional dependencies
 text: |1
-     implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
+     implementation 'io.kubernetes:client-java-spring-aot-integration:19.0.1'
 ```
 
 #### Generating Java Classes for the CRD
