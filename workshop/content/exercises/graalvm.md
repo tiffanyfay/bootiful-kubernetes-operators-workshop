@@ -117,13 +117,13 @@ The Kubernetes Java Client is available as a special version with AOT compilatio
 ```editor:select-matching-text
 file: ~/controller/build.gradle
 description: Select Java client for Kubernetes dependency
-text: implementation 'io.kubernetes:client-java-spring-integration:18.0.1'
+text: implementation 'io.kubernetes:client-java-spring-integration:19.0.1'
 ```
 ```editor:replace-text-selection
 file: ~/controller/build.gradle
 description: Replace with Java client for Kubernetes AOT dependency
 text: |
-     implementation 'io.kubernetes:client-java-spring-aot-integration:18.0.1'
+     implementation 'io.kubernetes:client-java-spring-aot-integration:19.0.1'
 ```
 
 You may still remember that we **used a YAML template which we loaded from the Classpath** in the Reconciler instead of programmatically building up the Deployment from scratch and that **undetected usages of classpath resources have to be provided to the native-image tool** in the form of configuration files.**
