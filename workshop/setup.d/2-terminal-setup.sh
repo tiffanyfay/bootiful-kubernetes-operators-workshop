@@ -22,4 +22,3 @@ docker tag harbor.main.emea.end2end.link/tap-workshops/foo-controller-native $RE
 docker push $REGISTRY_HOST/foo-controller-native
 docker pull harbor.main.emea.end2end.link/tap-workshops/foo-controller
 docker tag harbor.main.emea.end2end.link/tap-workshops/foo-controller $REGISTRY_HOST/foo-controller
-docker push $REGISTRY_HOST/foo-controller
