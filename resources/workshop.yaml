@@ -6,10 +6,10 @@ spec:
   title: Bootiful Kubernetes Operators
   description: A workshop that demonstrates how to build Kubernetes operators with Spring Boot.
   workshop:
-    image: ghcr.io/timosalm/bootiful-kubernetes-operators-workshop:main 
+    image: ghcr.io/tiffanyfay/bootiful-kubernetes-operators-workshop:main 
     files:
     - git:
-        url: https://github.com/timosalm/bootiful-kubernetes-operators-workshop
+        url: https://github.com/tiffanyfay/bootiful-kubernetes-operators-workshop
         ref: origin/main
       includePaths:
       - /workshop/**
